@@ -2,8 +2,8 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Image } from "react-native";
-import { Home } from "./src/Screens";
+import { Button, Image } from "react-native";
+import { Home, ProductDetails } from "./src/Screens";
 import colors from "./src/theme/colors";
 import { images } from "./src/assets";
 import { UserProvider } from "./src/AuthContaxt";
@@ -15,6 +15,9 @@ const BottomTab = createBottomTabNavigator();
 function Dashboard({ navigation }) {
   return (
     <BottomTab.Navigator backBehavior="none"
+                         screenOptions={{
+                           headerShown: false,
+                         }}
                          shifting={false}
                          activeColor={colors.tabActiveColor}
                          inactiveColor={colors.tabActiveColor}
@@ -93,9 +96,14 @@ function App() {
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
-            headerShown: false,
+            headerShown: true,
           }}>
+
           <Stack.Screen name="Home" component={Dashboard} />
+          <Stack.Screen name="ProductDetails" options={{
+            headerTitle: "Product Details",
+            showLabel: false
+          }} component={ProductDetails} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>

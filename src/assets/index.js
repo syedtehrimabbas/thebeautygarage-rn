@@ -10,4 +10,5 @@ export const images = {
   slider: require("./images/sliders/slider.png"),
   product: require("./images/product.png"),
   featured_product: require("./images/featured_product.png"),
+  star: require("./images/icons/star/star.png"),
 };
