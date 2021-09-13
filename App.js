@@ -2,8 +2,8 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Button, Image } from "react-native";
-import { Home, ProductDetails } from "./src/Screens";
+import { Image } from "react-native";
+import { Cart, Home, ProductDetails } from "./src/Screens";
 import colors from "./src/theme/colors";
 import { images } from "./src/assets";
 import { UserProvider } from "./src/AuthContaxt";
@@ -102,8 +102,14 @@ function App() {
           <Stack.Screen name="Home" component={Dashboard} />
           <Stack.Screen name="ProductDetails" options={{
             headerTitle: "Product Details",
-            showLabel: false
+            showLabel: false,
           }} component={ProductDetails} />
+          <Stack.Screen name="Cart" options={{
+            headerTitle: "My Shopping Cart",
+            showLabel: false,
+          }}
+                        component={Cart} />
+
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>

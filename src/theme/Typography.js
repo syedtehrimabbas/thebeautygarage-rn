@@ -47,4 +47,10 @@ export const Typography = {
     fontWeight: "bold",
     fontFamily: "Poppins-SemiBold",
   },
+  SmallBold: {
+    fontSize: 13,
+    color: "#000000",
+    fontWeight: "bold",
+    fontFamily: "Poppins-SemiBold",
+  },
 };

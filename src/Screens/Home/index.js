@@ -1,12 +1,13 @@
 import React from "react";
 import AppContainer from "../../core/AppContainer";
-import { FlatList, Image, ScrollView, StyleSheet, TouchableOpacity, Text, View } from "react-native";
+import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import UserContext from "../../AuthContaxt";
 import Swiper from "react-native-swiper";
 import { images } from "../../assets";
 import { Typography } from "../../theme/Typography";
 import colors from "../../theme/colors";
 import { AppButton } from "../../core/AppButton";
+import { wp } from "../../AppStyle/Dimension";
 
 const SliderComponent = () => {
   return <View>
@@ -19,7 +20,7 @@ const SliderComponent = () => {
   </View>;
 };
 
-function Home({navigation}) {
+function Home({ navigation }) {
   const state = React.useContext(UserContext);
 
   return (<AppContainer
@@ -45,7 +46,10 @@ function Home({navigation}) {
               </Swiper>
             </View>
 
-            <Text style={[Typography.ALargeBold, { textAlign: "center" }]}>{"Categories"}</Text>
+            <Text style={[Typography.MediumBold, {
+              textAlign: "center",
+              margin: 20,
+            }]}>{"Categories".toLocaleUpperCase()}</Text>
 
             <View style={{ height: 50 }}>
               <FlatList
@@ -56,8 +60,11 @@ function Home({navigation}) {
                   color: colors.black,
                   margin: 5,
                   elevation: 1,
-                  backgroundColor: "#FFF",
-                  borderRadius: 17,
+                  backgroundColor: colors.grey3,
+                  borderTopRightRadius: 17,
+                  borderTopLeftRadius: 17,
+                  borderBottomLeftRadius: 17,
+                  borderBottomRightRadius: 0,
                   height: 30,
                   paddingStart: 10,
                   paddingEnd: 10,
@@ -69,16 +76,17 @@ function Home({navigation}) {
               />
             </View>
 
-            <Text style={[Typography.ALargeBold, { textAlign: "center" }]}>{"Best Sellers"}</Text>
+            <Text style={[Typography.MediumBold, { textAlign: "center", margin: 20 }]}>{"Best Sellers"}</Text>
             <FlatList
               showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}
               data={["Skin Care", "Eye Care", "Hair Care", "Hand and foot care", "Kits $ gifts", "Supplements", "Toners", "Baby Care"]}
               horizontal={true}
-              renderItem={({ index, item }) => <TouchableOpacity onPress={()=>navigation.navigate("ProductDetails")} activeOpacity={0.7} style={{
+              renderItem={({ index, item }) => <TouchableOpacity onPress={() => navigation.navigate("ProductDetails")}
+                                                                 activeOpacity={0.7} style={{
                 width: 164,
                 borderRadius: 20,
                 backgroundColor: "#fff",
-                elevation: 3,
+                elevation: 2,
                 margin: 10,
                 padding: 20,
               }}>
@@ -94,12 +102,29 @@ function Home({navigation}) {
                     color: "#FF0000",
                     marginTop: 5,
                   }]}>{"Rs. 2200"}</Text>
-                  <AppButton label={"Add to cart"} backgroundColor={colors.black} onPress={()=>alert("under dev")} styles={{alignSelf:'center'}}/>
+                  <AppButton label={"Add to cart"} backgroundColor={colors.black} onPress={() => alert("under dev")}
+                             styles={{ alignSelf: "center" }} />
 
                 </View>
               </TouchableOpacity>}
             />
-            <Text style={[Typography.ALargeBold, { textAlign: "center" }]}>{"Featured Products"}</Text>
+
+            <AppButton
+              label={"Load more"}
+              backgroundColor={colors.grey3}
+              textColor={colors.black}
+              width={wp(25)}
+              onPress={() => alert("under dev")}
+              styles={{ alignSelf: "center" }}
+              borderRadius={2} />
+
+            <View>
+              <Image
+                source={images.slider}
+                style={{ width: "100%", resizeMode: "contain", alignSelf: "center" }} />
+            </View>
+
+            <Text style={[Typography.MediumBold, { textAlign: "center", margin: 20 }]}>{"Featured Products"}</Text>
 
             <FlatList
               showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}
@@ -110,7 +135,7 @@ function Home({navigation}) {
                   width: 164,
                   borderRadius: 20,
                   backgroundColor: "#fff",
-                  elevation: 3,
+                  elevation: 2,
                   margin: 10,
                   padding: 20,
                 }}>
@@ -125,10 +150,47 @@ function Home({navigation}) {
                   color: "#FF0000",
                   marginTop: 5,
                 }]}>{"Rs. 1600"}</Text>
-                <AppButton label={"Add to cart"} backgroundColor={colors.black} onPress={()=>alert("under dev")} styles={{alignSelf:'center'}}/>
+                <AppButton label={"Add to cart"} backgroundColor={colors.black} onPress={() => alert("under dev")}
+                           styles={{ alignSelf: "center" }} />
 
               </View>}
             />
+
+            <AppButton
+              label={"Load more"}
+              backgroundColor={colors.grey3}
+              textColor={colors.black}
+              width={wp(25)}
+              onPress={() => alert("under dev")}
+              styles={{ alignSelf: "center" }}
+              borderRadius={2} />
+
+            <Text style={[Typography.MediumBold, { textAlign: "center", margin: 20 }]}>{"Featured Brands"}</Text>
+
+
+            <FlatList
+              showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}
+              data={["Pixi","Clinique","Pixi","Clinique","Pixi","Clinique","Pixi","Clinique"]}
+              horizontal={true}
+              renderItem={({ index, item }) => <View
+                style={{
+                  width: 150,
+                  borderRadius: 20,
+                  backgroundColor: "#fff",
+                  elevation: 2,
+                  margin: 10,
+                  padding: 20,
+                }}>
+                <Image source={images.feature_bran_dummy} style={{ width: 80, height: 127, alignSelf: "center" }} />
+                <Text style={[Typography.MediumBold, {
+                  textAlign: "center",
+                  marginTop: 5,
+                }]}>{item}</Text>
+
+              </View>}
+            />
+
+
           </View>
         </ScrollView>
       </View>}>

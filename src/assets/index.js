@@ -11,4 +11,5 @@ export const images = {
   product: require("./images/product.png"),
   featured_product: require("./images/featured_product.png"),
   star: require("./images/icons/star/star.png"),
+  feature_bran_dummy: require("./images/feature_bran_dummy.png"),
 };

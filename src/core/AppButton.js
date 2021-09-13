@@ -3,16 +3,16 @@ import { Text, TouchableOpacity } from "react-native";
 import colors from "../theme/colors";
 import { Typography } from "../theme/Typography";
 
-export const AppButton = ({ label, onPress, backgroundColor, styles, height }) => {
+export const AppButton = ({ label, onPress, backgroundColor, styles, height,width, textColor ,borderRadius}) => {
   return <TouchableOpacity
     onPress={onPress}
     style={[{
-      borderRadius: 50,
+      borderRadius: borderRadius !== undefined ? borderRadius : 50,
       backgroundColor: backgroundColor,
-      width: "80%",
+      width: width !== undefined ? width : '80%',
       justifyContent: "center",
       alignItems: "center",
-      height: height !== undefined ? height : 20,
+      height: height !== undefined ? height : 25,
       marginTop: 10,
       alignSelf: "center",
       shadowOpacity: 0.5,
@@ -22,8 +22,8 @@ export const AppButton = ({ label, onPress, backgroundColor, styles, height }) =
       shadowOffset: { width: 1, height: 13 },
     }, styles]}
   >
-    <Text style={[Typography.MediumBold, {
-      color: colors.white,
+    <Text style={[Typography.MediumRegular, {
+      color: textColor !== undefined ? textColor : colors.white,
     }]}>{label}</Text>
   </TouchableOpacity>;
 };
