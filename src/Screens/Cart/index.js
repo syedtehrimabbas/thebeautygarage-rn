@@ -1,75 +1,176 @@
 import React from "react";
 import AppContainer from "../../core/AppContainer";
-import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import UserContext from "../../AuthContaxt";
-import { wp } from "../../AppStyle/Dimension";
+import { hp, wp } from "../../AppStyle/Dimension";
 import { images } from "../../assets";
 import { Typography } from "../../theme/Typography";
 import colors from "../../theme/colors";
+import { AppButton } from "../../core/AppButton";
 
-function Cart() {
+function Cart({ navigation }) {
   const state = React.useContext(UserContext);
-  const [cartItems] = React.useState([{
-    title: "Pixi Rose Tonic",
-    size: "100 ML",
-    price: 2400,
-    currency: "PKR",
-  }, { title: "Pixi Tonic", size: "150 ML", price: 2000, currency: "PKR" }]);
+  const [subTotal, SubTotal] = React.useState(7200);
+  const [tax, Tax] = React.useState(450);
+  const [fee, Fee] = React.useState(350);
+  const totalPrice = React.useState(subTotal + tax + fee);
+
+  const [cartItems] = React.useState([
+    { title: "Pixi Rose Tonic", size: "100 ML", price: 2400, currency: "PKR" },
+    { title: "Pixi Tonic", size: "150 ML", price: 2000, currency: "PKR" },
+    { title: "Pixi Tonic", size: "150 ML", price: 2000, currency: "PKR" },
+    { title: "Pixi Tonic", size: "150 ML", price: 2000, currency: "PKR" },
+    { title: "Pixi Tonic", size: "150 ML", price: 2000, currency: "PKR" },
+  ]);
   return (<AppContainer
       state={state}
-      children={<View style={{ background: "white" }}>
-        <FlatList
-          showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}
-          data={cartItems}
-          style={{ width: wp(90), alignSelf: "center" }}
-          renderItem={({ index, item }) => <View
-            style={{
-              width: wp(90),
-              marginTop: 10,
-              borderRadius: 10,
-              backgroundColor: "#FFEEEE",
-              elevation: 1,
-              padding: 10,
-              flexDirection: "row",
-            }}>
-            <Image source={images.featured_product} style={{ width: 50, height: 50, resizeMode: "contain" }} />
-            <View style={{ flexDirection: "column" }}>
-              <Text style={[Typography.SmallBold, {
-                marginTop: 5,
-                width: 100,
-              }]}>{item.title}</Text>
-
-              <Text style={{
-                marginTop: 5,
-                paddingStart: 5,
-                paddingEnd: 5,
+      children={<ScrollView>
+        <View style={{ background: "white" }}>
+          <FlatList
+            showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}
+            data={cartItems}
+            style={{ width: wp(90), height: hp(50), alignSelf: "center" }}
+            renderItem={({ index, item }) => <View
+              style={{
+                width: wp(90),
+                marginTop: 10,
                 borderRadius: 10,
-                elevation: 2,
-                backgroundColor: colors.black,
-                color: colors.white,
-                width: 50,
-              }}>{item.size}</Text>
+                backgroundColor: "#FFEEEE",
+                elevation: 1,
+                padding: 10,
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}>
+              <View style={{ flexDirection: "row" }}>
 
-              <Text style={[Typography.SmallRegular, {
-                marginTop: 5,
-                width: 100,
-              }]}>{item.price + item.currency}</Text>
+                <Image source={images.featured_product} style={{ width: 50, height: 50, resizeMode: "contain" }} />
+
+                <View style={{ flexDirection: "column" }}>
+                  <Text style={[Typography.SmallBold, {
+                    marginTop: 5,
+                    width: 100,
+                  }]}>{item.title}</Text>
+
+                  <Text style={{
+                    marginTop: 5,
+                    paddingStart: 5,
+                    paddingEnd: 5,
+                    borderRadius: 10,
+                    elevation: 2,
+                    backgroundColor: colors.black,
+                    color: colors.white,
+                    width: 40,
+                    fontSize: 10,
+                  }}>{item.size}</Text>
+
+                  <Text style={[Typography.SmallRegular, {
+                    marginTop: 5,
+                    width: 100,
+                  }]}>{item.price + item.currency}</Text>
+                </View>
+
+              </View>
+
+              <View style={{ flexDirection: "row", height: 30, alignSelf: "center" }}>
+                <TouchableOpacity
+                  style={{ width: 20, height: 20, margin: 5, backgroundColor: colors.red, borderRadius: 5 }}>
+                  <Text style={[Typography.MediumBold, { color: "white", alignSelf: "center" }]}>{"+"}</Text>
+                </TouchableOpacity>
+                <Text style={[Typography.MediumBold, { alignSelf: "center" }]}>{"01"}</Text>
+                <TouchableOpacity
+                  style={{ width: 20, height: 20, margin: 5, backgroundColor: colors.grey2, borderRadius: 5 }}>
+                  <Text style={[Typography.MediumBold, { color: "white", alignSelf: "center" }]}>{"-"}</Text>
+                </TouchableOpacity>
+              </View>
+
+            </View>}
+          />
+
+          <View style={{
+            flexDirection: "column", width: wp(90),
+            marginTop: 10,
+            borderRadius: 10,
+            backgroundColor: colors.white,
+            alignSelf: "center",
+            elevation: 1,
+            padding: 10,
+            justifyContent: "space-between",
+          }}>
+            <Text style={[Typography.MediumBold]}>{"Have a coupon?"}</Text>
+            <Text style={[Typography.SmallMedium, {
+              color: colors.grey2,
+              marginTop: 5,
+            }]}>{"Enter your coupon code here & get awesome discounts!"}</Text>
+            <View style={{
+              flexDirection: "row",
+              backgroundColor: colors.grey3,
+              borderRadius: 100,
+              height: 35,
+              width: wp(80),
+              paddingStart: 10,
+              alignItems: "center",
+              marginTop: 5,
+              justifyContent: "space-between",
+            }}>
+              <TextInput style={[Typography.SmallMedium, { color: colors.grey2 }]}
+                         placeholder={"Enter Coupon Code"}>
+              </TextInput>
+              <TouchableOpacity style={{
+                backgroundColor: colors.red,
+                borderRadius: 100,
+                height: 35,
+                width: wp(20),
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+                <Text style={[Typography.SmallMedium, { color: colors.white }]}>{"Apply"}</Text>
+              </TouchableOpacity>
             </View>
-            <View style={{ flexDirection: "row", height: 30 }}>
-              <TouchableOpacity
-                style={{ width: 20, height: 20, margin: 5, backgroundColor: colors.red, borderRadius: 5 }}>
-                <Text style={[Typography.MediumBold, { color: "white", alignSelf: "center" }]}>{"+"}</Text>
-              </TouchableOpacity>
-              <Text style={[Typography.MediumBold, { alignSelf: "center" }]}>{"01"}</Text>
-              <TouchableOpacity
-                style={{ width: 20, height: 20, margin: 5, backgroundColor: colors.grey2, borderRadius: 5 }}>
-                <Text style={[Typography.MediumBold, { color: "white", alignSelf: "center" }]}>{"-"}</Text>
-              </TouchableOpacity>
+          </View>
+
+          <View style={{
+            flexDirection: "column",
+            width: wp(90),
+            marginTop: 10,
+            marginBottom: 10,
+            borderRadius: 10,
+            backgroundColor: colors.white,
+            alignSelf: "center",
+            elevation: 1,
+            padding: 10,
+          }}>
+            <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5, justifyContent: "space-between" }}>
+              <Text style={[Typography.MediumRegular, { color: colors.grey2 }]}>{"Subtotal"}</Text>
+              <Text style={[Typography.MediumBold]}>{subTotal}</Text>
             </View>
 
-          </View>}
-        />
-      </View>}>
+            <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5, justifyContent: "space-between" }}>
+              <Text style={[Typography.MediumRegular, { color: colors.grey2 }]}>{"Tax"}</Text>
+              <Text style={[Typography.MediumBold]}>{tax}</Text>
+            </View>
+
+            <View style={{
+              flexDirection: "row", alignItems: "center", marginTop: 5, justifyContent: "space-between",
+              borderBottomWidth: 0.5,
+              borderBottomColor: colors.grey3,
+              paddingBottom: 10,
+              marginBottom: 10,
+            }}>
+              <Text style={[Typography.MediumRegular, { color: colors.grey2 }]}>{"Shipping Fee"}</Text>
+              <Text style={[Typography.MediumBold]}>{fee}</Text>
+            </View>
+
+            <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5, justifyContent: "space-between" }}>
+              <Text style={[Typography.MediumRegular, { color: colors.grey2 }]}>{"Total Price"}</Text>
+              <Text style={[Typography.MediumBold]}>{totalPrice}</Text>
+            </View>
+
+          </View>
+          <AppButton label={"Check Out"} backgroundColor={colors.red}
+                     onPress={() => navigation.navigate("CheckoutAddress")}
+                     styles={{ alignSelf: "center", marginBottom: 20 }} height={45} />
+        </View>
+      </ScrollView>}>
     </AppContainer>
   );
 }

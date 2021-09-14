@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Image } from "react-native";
-import { Cart, Home, ProductDetails } from "./src/Screens";
+import { Cart, CheckoutAddress, CheckoutDelivery, Home, ProductDetails } from "./src/Screens";
 import colors from "./src/theme/colors";
 import { images } from "./src/assets";
 import { UserProvider } from "./src/AuthContaxt";
@@ -109,6 +109,15 @@ function App() {
             showLabel: false,
           }}
                         component={Cart} />
+
+          <Stack.Screen name="CheckoutAddress" options={{
+            headerTitle: "Checkout",
+            showLabel: false,
+          }} component={CheckoutAddress} />
+          <Stack.Screen name="CheckoutDelivery" options={{
+            headerTitle: "Checkout",
+            showLabel: false,
+          }} component={CheckoutDelivery} />
 
         </Stack.Navigator>
       </NavigationContainer>
