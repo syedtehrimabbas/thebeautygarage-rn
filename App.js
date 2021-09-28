@@ -3,10 +3,19 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Image } from "react-native";
-import { Cart, CheckoutAddress, CheckoutDelivery, Home, ProductDetails } from "./src/Screens";
+import {
+  Cart,
+  CheckoutAddress,
+  CheckoutDelivery,
+  ConfirmOrder,
+  Home,
+  PaymentMethod,
+  ProductDetails,
+} from "./src/Screens";
 import colors from "./src/theme/colors";
 import { images } from "./src/assets";
 import { UserProvider } from "./src/AuthContaxt";
+import { CheckoutSuccess } from "./src/Screens/Checkout/CheckoutSuccess";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -114,10 +123,27 @@ function App() {
             headerTitle: "Checkout",
             showLabel: false,
           }} component={CheckoutAddress} />
+
           <Stack.Screen name="CheckoutDelivery" options={{
             headerTitle: "Checkout",
             showLabel: false,
           }} component={CheckoutDelivery} />
+
+          <Stack.Screen name="PaymentMethod" options={{
+            headerTitle: "Payment",
+            showLabel: false,
+          }} component={PaymentMethod} />
+
+          <Stack.Screen name="ConfirmOrder" options={{
+            headerTitle: "Confirm Order",
+            showLabel: false,
+          }} component={ConfirmOrder} />
+
+          <Stack.Screen name="CheckoutSuccess" options={{
+            headerTitle: "",
+            showLabel: false,
+            headerShown: false
+          }} component={CheckoutSuccess} />
 
         </Stack.Navigator>
       </NavigationContainer>

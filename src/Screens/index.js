@@ -6,3 +6,5 @@ export * from './productdetails/reviews';
 export * from './Cart';
 export * from './Checkout/Address';
 export * from './Checkout/Delivery';
+export * from './Checkout/PaymentMethod';
+export * from './Checkout/ConfirmOrder';

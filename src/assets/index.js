@@ -12,4 +12,7 @@ export const images = {
   featured_product: require("./images/featured_product.png"),
   star: require("./images/icons/star/star.png"),
   feature_bran_dummy: require("./images/feature_bran_dummy.png"),
+  cash: require("./images/ic_cash.png"),
+  ic_delete: require("./images/ic_delete.png"),
+  ic_checked: require("./images/ic_checked.png"),
 };
