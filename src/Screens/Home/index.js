@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AppContainer from "../../core/AppContainer";
 import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import UserContext from "../../AuthContaxt";
@@ -8,6 +8,8 @@ import { Typography } from "../../theme/Typography";
 import colors from "../../theme/colors";
 import { AppButton } from "../../core/AppButton";
 import { wp } from "../../AppStyle/Dimension";
+import HttpService from "../../http";
+import { PRODUCT_TYPE } from "../../constants/Constants";
 
 const SliderComponent = () => {
   return <View>
@@ -22,6 +24,70 @@ const SliderComponent = () => {
 
 function Home({ navigation }) {
   const state = React.useContext(UserContext);
+  const [productsTop, ProductsTop] = useState([]);
+  const [productsBestSelling, ProductsBestSelling] = useState([]);
+  const [productsFeatured, ProductsFeatured] = useState([]);
+  const [homeSliders, HomeSliders] = useState([]);
+  const [categories, Categories] = useState([]);
+  React.useEffect(() => {
+
+    _productByType(PRODUCT_TYPE.top);
+    _productByType(PRODUCT_TYPE.bestSeller);
+    _productByType(PRODUCT_TYPE.featured);
+    _homeSliders();
+    _allCategories();
+
+  }, []);
+
+  const _productByType = (type) => {
+    state.Loading(true);
+    HttpService._productByType(type, (status, res) => {
+      console.log("res", res);
+      let data = res.data;
+      if (status && res.status) {
+        switch (type) {
+          case PRODUCT_TYPE.top: {
+            ProductsTop(res.data);
+          }
+            break;
+          case PRODUCT_TYPE.bestSeller: {
+            ProductsBestSelling(data);
+          }
+            break;
+          case PRODUCT_TYPE.featured: {
+            ProductsFeatured(data);
+          }
+            break;
+        }
+      }
+      state.Loading(false);
+    });
+  };
+
+  const _homeSliders = () => {
+    state.Loading(true);
+    HttpService._homeSliders((status, res) => {
+      console.log("res", res);
+      let data = res.data;
+      if (status && res.status) {
+        HomeSliders(data);
+      }
+      state.Loading(false);
+    });
+  };
+
+  const _allCategories = () => {
+      state.Loading(true);
+      HttpService._allCategories((status, res) => {
+        console.log("res", res);
+        let data = res.data;
+        if (status && res.status) {
+          Categories(data);
+        }
+        state.Loading(false);
+      });
+    }
+  ;
 
   return (<AppContainer
       state={state}
@@ -170,7 +236,7 @@ function Home({ navigation }) {
 
             <FlatList
               showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}
-              data={["Pixi","Clinique","Pixi","Clinique","Pixi","Clinique","Pixi","Clinique"]}
+              data={["Pixi", "Clinique", "Pixi", "Clinique", "Pixi", "Clinique", "Pixi", "Clinique"]}
               horizontal={true}
               renderItem={({ index, item }) => <View
                 style={{
