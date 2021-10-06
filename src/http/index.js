@@ -28,7 +28,7 @@ class Http {
   };
 
   _productByType(type, callBack) {
-    const url = this.getAbsoluteUrl(endPoints.home.productsByType.append(type));
+    const url = this.getAbsoluteUrl(`${endPoints.home.productsByType}${type}`);
     this.getHttpRequest(url, callBack);
   }
 
@@ -44,17 +44,17 @@ class Http {
   }
 
   _productByCatId(category_id, callBack) {
-    const url = this.getAbsoluteUrl(endPoints.home.category.append(category_id));
+    const url = this.getAbsoluteUrl(`${endPoints.home.category}${category_id}`);
     this.getHttpRequest(url, callBack);
   }
 
   _productBySubCatId(sub_category_id, callBack) {
-    const url = this.getAbsoluteUrl(endPoints.home.subCategory.append(sub_category_id));
+    const url = this.getAbsoluteUrl(`${endPoints.home.subCategory}${sub_category_id}`);
     this.getHttpRequest(url, callBack);
   }
 
   _productDetailsById(id, callBack) {
-    const url = this.getAbsoluteUrl(endPoints.home.productDetails.append(id));
+    const url = this.getAbsoluteUrl(`${endPoints.home.productDetails}${id}`);
     this.getHttpRequest(url, callBack);
   }
 
