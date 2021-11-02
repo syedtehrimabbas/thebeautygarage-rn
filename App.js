@@ -2,7 +2,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Image, LogBox, Platform, UIManager } from "react-native";
+import { Image, LogBox, Platform, Text, TouchableOpacity, UIManager, View } from "react-native";
 import {
   Cart,
   CheckoutAddress,
@@ -14,20 +14,44 @@ import {
 } from "./src/Screens";
 import colors from "./src/theme/colors";
 import { images } from "./src/assets";
-import { UserProvider } from "./src/AuthContaxt";
+import UserContext, { UserProvider } from "./src/AuthContaxt";
 import { CheckoutSuccess } from "./src/Screens/Checkout/CheckoutSuccess";
 import Splash from "./src/Screens/splash";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
 
-
 function Dashboard({ navigation }) {
+  const state = React.useContext(UserContext);
+
+  let headerIconStyle = { width: 20, height: 20, resizeMode: "center"};
+  let headerTouchIconStyle = { width: 20, height: 20,marginEnd:10};
+  navigation.setOptions({
+    headerRight: () => (
+      <TouchableOpacity style={headerTouchIconStyle} onPress={()=>{
+        navigation.navigate("Cart")
+      }}>
+        <View>
+          <Text style={{position:'absolute',top:-10,right:-10,width:15,height:15,textAlign:'center',textAlignVertical:'center',borderRadius:8 ,backgroundColor:colors.greyTabs}}>{state.cartProducts.length}</Text>
+        <Image source={images.header.cart} style={headerIconStyle} />
+      </View>
+      </TouchableOpacity>
+    ),
+    headerLeft: () => (
+      <View style={{ flexDirection: "row",alignItems:'center' }}>
+        <TouchableOpacity style={headerTouchIconStyle}>
+          <Image source={images.header.side_menu} style={headerIconStyle} />
+        </TouchableOpacity>
+        <TouchableOpacity style={headerTouchIconStyle}>
+          <Image source={images.header.search} style={headerIconStyle} />
+        </TouchableOpacity>
+      </View>
+    ),
+  });
+
   return (
     <BottomTab.Navigator backBehavior="none"
-                         screenOptions={{
-                           headerShown: false,
-                         }}
+                         screenOptions={{ headerShown: false }}
                          shifting={false}
                          activeColor={colors.tabActiveColor}
                          inactiveColor={colors.tabActiveColor}
@@ -38,11 +62,13 @@ function Dashboard({ navigation }) {
 
       <BottomTab.Screen name={"Home"} component={Home}
                         options={{
+                          headerShown: false,
                           tabBarIcon: ({ color }) => (
                             <Image source={images.nav_home}
                                    style={{ width: 20, height: 20, resizeMode: "contain", tintColor: color }} />
                           ),
-                        }} />
+                        }}
+      />
       <BottomTab.Screen name={"Track"} component={Home}
                         options={{
                           tabBarIcon: ({ color }) => (
@@ -64,7 +90,6 @@ function Dashboard({ navigation }) {
                                    style={{ width: 20, height: 20, resizeMode: "contain", tintColor: color }} />
                           ),
                         }} />
-
     </BottomTab.Navigator>
   );
 }
@@ -76,6 +101,7 @@ function App() {
   const [userSession, setUserSession] = React.useState({});
   const [userId, setUserId] = React.useState("0");
   const [loading, Loading] = React.useState(false);
+  const [cartProducts, CartProducts] = React.useState([]);
 
   let state = {
     splash: isSplash,
@@ -88,6 +114,8 @@ function App() {
     setUserSession: setUserSession,
     loading: loading,
     Loading: Loading,
+    cartProducts: cartProducts,
+    CartProducts: CartProducts,
   };
 
 
@@ -127,7 +155,13 @@ function App() {
               headerShown: true,
             }}>
 
-            <Stack.Screen name="Home" component={Dashboard} />
+            <Stack.Screen name="The Beauty Garage" component={Dashboard} options={{
+              headerTitle: "The Beauty Garage",
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }} />
+
             <Stack.Screen name="ProductDetails" options={{
               headerTitle: "Product Details",
               showLabel: false,

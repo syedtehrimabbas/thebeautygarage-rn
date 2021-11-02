@@ -15,4 +15,9 @@ export const images = {
   cash: require("./images/ic_cash.png"),
   ic_delete: require("./images/ic_delete.png"),
   ic_checked: require("./images/ic_checked.png"),
+  header:{
+    cart:require("./images/header/header_cart.png"),
+    search:require("./images/header/search.png"),
+    side_menu:require("./images/header/side_menu.png")
+  }
 };

@@ -20,6 +20,8 @@ import { AppButton } from "../../core/AppButton";
 import { wp } from "../../AppStyle/Dimension";
 import HttpService from "../../http";
 import { PRODUCT_TYPE } from "../../constants/Constants";
+import { isInCart } from "../../core/CommonMethods";
+import { OPEN_CART } from "../../core/EVENTS";
 
 const SliderComponent = ({ item }) => {
   let image = HttpService.getAbsoluteImageUrl(item.photo);
@@ -61,20 +63,22 @@ function Home({ navigation }) {
   const [productsFeatured, ProductsFeatured] = useState([]);
   const [homeSliders, HomeSliders] = useState([]);
   const [categories, Categories] = useState([]);
-  React.useEffect(() => {
-
+  const [selectedPosition, SelectedPosition] = useState([]);
+  const { cartProducts, CartProducts } = state;
+  React.useLayoutEffect(() => {
     _productByType(PRODUCT_TYPE.top);
     _productByType(PRODUCT_TYPE.bestSeller);
     _productByType(PRODUCT_TYPE.featured);
     _homeSliders();
     _allCategories();
+  }, [navigation]);
 
-  }, []);
 
   const _productByType = (type) => {
     state.Loading(true);
     HttpService._productByType(type, (status, res) => {
       console.log("res", res);
+      
       let data = res.data;
       if (status && res.status) {
         switch (type) {
@@ -109,17 +113,24 @@ function Home({ navigation }) {
   };
 
   const _allCategories = () => {
-      state.Loading(true);
-      HttpService._allCategories((status, res) => {
-        console.log("res", res);
-        let data = res.data;
-        if (status && res.status) {
-          Categories(data);
-        }
-        state.Loading(false);
-      });
-    }
-  ;
+    state.Loading(true);
+    HttpService._allCategories((status, res) => {
+      console.log("res", res);
+      let data = res.data;
+      if (status && res.status) {
+        Categories(data);
+      }
+      state.Loading(false);
+    });
+  };
+
+  const addCart = (item) => {
+    let prevCarts = [...cartProducts];
+    let index = prevCarts.indexOf(item);
+    if (index === -1) prevCarts.push(item);
+    else prevCarts.splice(index, 1);
+    CartProducts(prevCarts);
+  };
 
   return (<AppContainer
       state={state}
@@ -153,23 +164,24 @@ function Home({ navigation }) {
                 showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}
                 data={categories}
                 horizontal={true}
-                renderItem={({ index, item }) => <Text style={{
-                  color: colors.black,
-                  margin: 5,
-                  elevation: 1,
-                  backgroundColor: colors.grey3,
-                  borderTopRightRadius: 17,
-                  borderTopLeftRadius: 17,
-                  borderBottomLeftRadius: 17,
-                  borderBottomRightRadius: 0,
-                  height: 30,
-                  paddingStart: 10,
-                  paddingEnd: 10,
-                  paddingTop: 5,
-                  paddingBottom: 5,
-                  textAlign: "center",
-                  textAlignVertical: "center",
-                }}>{item.cat_name}</Text>}
+                renderItem={({ index, item }) => <TouchableOpacity onPress={() => SelectedPosition(index)}>
+                  <Text style={{
+                    color: selectedPosition === index ? colors.white : colors.black,
+                    margin: 5,
+                    backgroundColor: selectedPosition === index ? colors.red : colors.grey3,
+                    borderTopRightRadius: 17,
+                    borderTopLeftRadius: 17,
+                    borderBottomLeftRadius: 17,
+                    borderBottomRightRadius: 0,
+                    height: 30,
+                    paddingStart: 10,
+                    paddingEnd: 10,
+                    paddingTop: 5,
+                    paddingBottom: 5,
+                    textAlign: "center",
+                    textAlignVertical: "center",
+                  }}>{item.cat_name}</Text>
+                </TouchableOpacity>}
               />
             </View>
 
@@ -201,7 +213,7 @@ function Home({ navigation }) {
                     color: "#FF0000",
                     marginTop: 5,
                   }]}>{`Rs.${item.cprice}`}</Text>
-                  <AppButton label={"Add to cart"} backgroundColor={colors.black} onPress={() => alert("under dev")}
+                  <AppButton label={isInCart(cartProducts,item)?"Remove":"Add to cart"} backgroundColor={colors.black} onPress={() => addCart(item)}
                              styles={{ alignSelf: "center" }} />
 
                 </View>
@@ -250,7 +262,7 @@ function Home({ navigation }) {
                   color: "#FF0000",
                   marginTop: 5,
                 }]}>{`Rs. ${item.cprice}`}</Text>
-                <AppButton label={"Add to cart"} backgroundColor={colors.black} onPress={() => alert("under dev")}
+                <AppButton label={"Add to cart"} backgroundColor={colors.black} onPress={() => addCart(item)}
                            styles={{ alignSelf: "center" }} />
 
               </View>}

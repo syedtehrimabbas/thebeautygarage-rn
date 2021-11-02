@@ -10,6 +10,7 @@ let endPoints = {
     subCategory: "sub-category/",
     productDetails: "product/",
     allCategories: "categories",
+    productReviews: "product-reviews/",
   },
 };
 
@@ -55,6 +56,10 @@ class Http {
 
   _productDetailsById(id, callBack) {
     const url = this.getAbsoluteUrl(`${endPoints.home.productDetails}${id}`);
+    this.getHttpRequest(url, callBack);
+  }
+  _productReviewsById(id, callBack) {
+    const url = this.getAbsoluteUrl(`${endPoints.home.productReviews}${id}`);
     this.getHttpRequest(url, callBack);
   }
 
