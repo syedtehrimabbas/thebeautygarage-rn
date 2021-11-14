@@ -1,9 +1,4 @@
 export const LOGIN = "Login";
-export const SIGNUP = "Signup";
-export const DASHBOARD = "Dashboard";
 export const HOME = "Home";
-export const EMPLOYEES = "Employees";
-export const CLIENT_ENTRY = "ClientEntry";
 export const SETTINGS = "SettingsScreen";
 export const CASE_DETAILS = "CaseDetails";
-export const ACTIVITY_ENTRY = "ActivityEntry";

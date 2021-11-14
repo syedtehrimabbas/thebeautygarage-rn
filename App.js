@@ -17,6 +17,10 @@ import { images } from "./src/assets";
 import UserContext, { UserProvider } from "./src/AuthContaxt";
 import { CheckoutSuccess } from "./src/Screens/Checkout/CheckoutSuccess";
 import Splash from "./src/Screens/splash";
+import Welcome from "./src/Screens/welcome";
+import Login from "./src/Screens/login";
+import LoginScreen from "./src/Screens/login";
+import Signup from "./src/Screens/signup";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -24,21 +28,33 @@ const BottomTab = createBottomTabNavigator();
 function Dashboard({ navigation }) {
   const state = React.useContext(UserContext);
 
-  let headerIconStyle = { width: 20, height: 20, resizeMode: "center"};
-  let headerTouchIconStyle = { width: 20, height: 20,marginEnd:10};
+  let headerIconStyle = { width: 20, height: 20, resizeMode: "center" };
+  let headerTouchIconStyle = { width: 20, height: 20, marginEnd: 10 };
   navigation.setOptions({
     headerRight: () => (
-      <TouchableOpacity style={headerTouchIconStyle} onPress={()=>{
-        navigation.navigate("Cart")
+      <TouchableOpacity style={headerTouchIconStyle} onPress={() => {
+        if (state.cartProducts.length > 0)
+          navigation.navigate("Cart");
       }}>
         <View>
-          <Text style={{position:'absolute',top:-10,right:-10,width:15,height:15,textAlign:'center',textAlignVertical:'center',borderRadius:8 ,backgroundColor:colors.greyTabs}}>{state.cartProducts.length}</Text>
-        <Image source={images.header.cart} style={headerIconStyle} />
-      </View>
+          <Text style={{
+            position: "absolute",
+            top: -10,
+            right: -10,
+            width: 20,
+            height: 20,
+            textAlign: "center",
+            textAlignVertical: "center",
+            borderRadius: 10,
+            backgroundColor: colors.red,
+            color: colors.white,
+          }}>{state.cartProducts.length}</Text>
+          <Image source={images.header.cart} style={headerIconStyle} />
+        </View>
       </TouchableOpacity>
     ),
     headerLeft: () => (
-      <View style={{ flexDirection: "row",alignItems:'center' }}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
         <TouchableOpacity style={headerTouchIconStyle}>
           <Image source={images.header.side_menu} style={headerIconStyle} />
         </TouchableOpacity>
@@ -72,21 +88,21 @@ function Dashboard({ navigation }) {
       <BottomTab.Screen name={"Track"} component={Home}
                         options={{
                           tabBarIcon: ({ color }) => (
-                            <Image source={images.nav_home}
+                            <Image source={images.nav_track}
                                    style={{ width: 20, height: 20, resizeMode: "contain", tintColor: color }} />
                           ),
                         }} />
       <BottomTab.Screen name={"Chat"} component={Home}
                         options={{
                           tabBarIcon: ({ color }) => (
-                            <Image source={images.nav_home}
+                            <Image source={images.nav_chat}
                                    style={{ width: 20, height: 20, resizeMode: "contain", tintColor: color }} />
                           ),
                         }} />
       <BottomTab.Screen name={"Brands"} component={Home}
                         options={{
                           tabBarIcon: ({ color }) => (
-                            <Image source={images.nav_home}
+                            <Image source={images.nav_brands}
                                    style={{ width: 20, height: 20, resizeMode: "contain", tintColor: color }} />
                           ),
                         }} />
@@ -102,6 +118,7 @@ function App() {
   const [userId, setUserId] = React.useState("0");
   const [loading, Loading] = React.useState(false);
   const [cartProducts, CartProducts] = React.useState([]);
+  const [login, Login] = React.useState(false);
 
   let state = {
     splash: isSplash,
@@ -116,8 +133,9 @@ function App() {
     Loading: Loading,
     cartProducts: cartProducts,
     CartProducts: CartProducts,
+    login: login,
+    Login: Login,
   };
-
 
   React.useEffect(() => {
     if (
@@ -158,7 +176,7 @@ function App() {
             <Stack.Screen name="The Beauty Garage" component={Dashboard} options={{
               headerTitle: "The Beauty Garage",
               headerTitleStyle: {
-                fontWeight: 'bold',
+                fontWeight: "bold",
               },
             }} />
 
@@ -167,7 +185,7 @@ function App() {
               showLabel: false,
             }} component={ProductDetails} />
             <Stack.Screen name="Cart" options={{
-              headerTitle: "My Shopping Cart",
+              headerTitle: "TBG Cart",
               showLabel: false,
             }}
                           component={Cart} />
@@ -197,6 +215,23 @@ function App() {
               showLabel: false,
               headerShown: false,
             }} component={CheckoutSuccess} />
+
+            <Stack.Screen name="Welcome" options={{
+              headerTitle: "",
+              showLabel: false,
+              headerShown: false,
+            }} component={Welcome} />
+
+            <Stack.Screen name="LoginScreen" options={{
+              headerTitle: "Sign In Your Account",
+              showLabel: true,
+              headerShown: true,
+            }} component={LoginScreen} />
+            <Stack.Screen name="Signup" options={{
+              headerTitle: "Create an account",
+              showLabel: true,
+              headerShown: true,
+            }} component={Signup} />
 
           </Stack.Navigator>
         </NavigationContainer>

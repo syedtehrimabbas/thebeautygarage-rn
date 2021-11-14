@@ -20,7 +20,7 @@ function MyTab({ title, onPress, selectedTab, tabNo }) {
       <Text style={[Typography.MediumBold, {
         borderBottomWidth: 2,
         borderBottomColor: selectedTab === tabNo ? colors.red : "transparent",
-        paddingBottom:10
+        paddingBottom: 10,
       }]}>{title}</Text>
     </TouchableOpacity>
   );
@@ -71,8 +71,10 @@ function ProductDetails({ navigation, route }) {
   const addCart = (item) => {
     let prevCarts = [...cartProducts];
     let index = prevCarts.findIndex(thisItem => thisItem.id === item.id);
-    if (index === -1) prevCarts.push(item);
-    else prevCarts.splice(index, 1);
+    if (index === -1) {
+      item.quantity = 1;
+      prevCarts.push(item);
+    } else prevCarts.splice(index, 1);
     CartProducts(prevCarts);
   };
 
@@ -120,9 +122,12 @@ function ProductDetails({ navigation, route }) {
             }]}>{`${details.cprice} PKR`}</Text>
             <FlatList
               showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}
-              data={[{ title: "50ml", selected: details.size === "50ml" }, { title: "100ml", selected:  details.size === "100ml" }, {
+              data={[{ title: "50ml", selected: details.size === "50ml" }, {
+                title: "100ml",
+                selected: details.size === "100ml",
+              }, {
                 title: "200ml",
-                selected:  details.size === "200ml",
+                selected: details.size === "200ml",
               }]}
               horizontal={true}
               renderItem={({ index, item }) => <SizeItem text={item.title} selected={item.selected} />}
@@ -135,7 +140,7 @@ function ProductDetails({ navigation, route }) {
             flexDirection: "row",
             borderBottomWidth: .5,
             borderBottomColor: colors.grey,
-            marginBottom:5
+            marginBottom: 5,
           }}>
             <MyTab title={"About"} onPress={() => selectTab(1)} selectedTab={selectedTab} tabNo={1} />
             <MyTab title={"Return Policy"} onPress={() => selectTab(2)} selectedTab={selectedTab} tabNo={2} />
@@ -145,8 +150,9 @@ function ProductDetails({ navigation, route }) {
 
           {selectedTab === 1 ? <ProductAbout html={details.description} /> : selectedTab === 2 ?
             <ProductPrivacy html={details.policy} /> : <ProductReviews />}
-          <AppButton label={isInCart(cartProducts,details)?"Remove":"Add to cart"} backgroundColor={colors.red} onPress={() => addCart(details)}
-                     styles={{ alignSelf: "center" ,position:'absolute',bottom:40}} height={45} />
+          <AppButton label={isInCart(cartProducts, details) ? "Remove" : "Add to cart"} backgroundColor={colors.red}
+                     onPress={() => addCart(details)}
+                     styles={{ alignSelf: "center", position: "absolute", bottom: 40 }} height={45} />
         </View>
       </View>}>
     </AppContainer> : <AppContainer

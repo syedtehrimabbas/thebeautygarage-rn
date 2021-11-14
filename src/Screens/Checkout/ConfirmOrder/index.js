@@ -77,13 +77,13 @@ function ConfirmOrder({ navigation }) {
               style={[Typography.MediumBold, { color: colors.black }]}>{cartItems.length}</Text>
           </View>
           <View style={{ height: hp(30) }}>
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              showsHorizontalScrollIndicator={false}
-              data={cartItems}
-              style={{ width: wp(90), alignSelf: "center" }}
-              renderItem={({ item }) => <CartItem item={item} quantityViewShow={false} />}
-            />
+            {/*<FlatList*/}
+            {/*  showsVerticalScrollIndicator={false}*/}
+            {/*  showsHorizontalScrollIndicator={false}*/}
+            {/*  data={cartItems}*/}
+            {/*  style={{ width: wp(90), alignSelf: "center" }}*/}
+            {/*  renderItem={({ item }) => <CartItem item={item} quantityViewShow={false} />}*/}
+            {/*/>*/}
           </View>
 
           <Text

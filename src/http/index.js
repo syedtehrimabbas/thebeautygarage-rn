@@ -12,6 +12,8 @@ let endPoints = {
     allCategories: "categories",
     productReviews: "product-reviews/",
   },
+  login: "login",
+  register: "register",
 };
 
 class Http {
@@ -68,8 +70,12 @@ class Http {
     this.getHttpRequest(url, callBack);
   }
 
-  postCall(formData, callBack) {
-    const url = this.getAbsoluteUrl(endPoints.home.productsByType);
+  login(formData, callBack) {
+    const url = this.getAbsoluteUrl(endPoints.login);
+    this.postHttpRequest(url, formData, callBack, false);
+  }
+  register(formData, callBack) {
+    const url = this.getAbsoluteUrl(endPoints.register);
     this.postHttpRequest(url, formData, callBack, false);
   }
 

@@ -18,7 +18,7 @@ const colors = {
   lightgrey: "#F4F4F4",
   dark_grey: "#E5E6E8",
   greyTabs: "#E1DEE5",
-  tabActiveColor: "#27282A",
+  tabActiveColor: "#FF2727",
   red: "#FF2727",
   // your colors
 };

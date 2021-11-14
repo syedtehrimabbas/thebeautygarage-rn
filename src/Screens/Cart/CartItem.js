@@ -5,7 +5,8 @@ import { images } from "../../assets";
 import { Typography } from "../../theme/Typography";
 import colors from "../../theme/colors";
 
-export const CartItem = ({ item, quantityViewShow }) => {
+export const CartItem = ({ item, quantityViewShow, onPlus, onMinus, removeFromCart }) => {
+  console.log(JSON.stringify(item) + "\n");
   return <View
     style={{
       width: wp(90),
@@ -18,7 +19,7 @@ export const CartItem = ({ item, quantityViewShow }) => {
       justifyContent: "space-between",
     }}>
     <View style={{ flexDirection: "row", alignItems: "center" }}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={removeFromCart}>
         <Image source={images.ic_delete}
                style={{ width: 20, height: 20, resizeMode: "contain" }} />
       </TouchableOpacity>
@@ -29,9 +30,9 @@ export const CartItem = ({ item, quantityViewShow }) => {
         <Text style={[Typography.SmallBold, {
           marginTop: 5,
           width: 100,
-        }]}>{item.title}</Text>
+        }]}>{item.name}</Text>
 
-        <Text style={{
+        {item.size && item.size !== null ? <Text style={{
           marginTop: 5,
           paddingStart: 5,
           paddingEnd: 5,
@@ -41,23 +42,31 @@ export const CartItem = ({ item, quantityViewShow }) => {
           color: colors.white,
           width: 40,
           fontSize: 10,
-        }}>{item.size}</Text>
+        }}>{item.size}</Text> : null}
 
         <Text style={[Typography.SmallRegular, {
           marginTop: 5,
           width: 100,
-        }]}>{item.price + item.currency}</Text>
+        }]}>{item.cprice * item.quantity + " PKR"}</Text>
       </View>
 
     </View>
     {quantityViewShow ? <View style={{ flexDirection: "row", height: 30, alignSelf: "center" }}>
-      <TouchableOpacity
-        style={{ width: 20, height: 20, margin: 5, backgroundColor: colors.red, borderRadius: 5 }}>
+      <TouchableOpacity onPress={onPlus}
+                        style={{ width: 20, height: 20, margin: 5, backgroundColor: colors.red, borderRadius: 5 }}>
         <Text style={[Typography.MediumBold, { color: "white", alignSelf: "center" }]}>{"+"}</Text>
       </TouchableOpacity>
-      <Text style={[Typography.MediumBold, { alignSelf: "center" }]}>{"01"}</Text>
-      <TouchableOpacity
-        style={{ width: 20, height: 20, margin: 5, backgroundColor: colors.grey2, borderRadius: 5 }}>
+      <Text style={[Typography.MediumBold, { alignSelf: "center" }]}>{item.quantity}</Text>
+      <TouchableOpacity onPress={() => {
+        if (item.quantity > 1) onMinus();
+      }}
+                        style={{
+                          width: 20,
+                          height: 20,
+                          margin: 5,
+                          backgroundColor: item.quantity > 1 ? colors.red : colors.grey2,
+                          borderRadius: 5,
+                        }}>
         <Text style={[Typography.MediumBold, { color: "white", alignSelf: "center" }]}>{"-"}</Text>
       </TouchableOpacity>
     </View> : null}

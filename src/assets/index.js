@@ -2,9 +2,10 @@ export const images = {
   logo: require("./images/app_logo.png"),
   icEmail: require("./images/ic_email.png"),
   icLock: require("./images/ic_password.png"),
-  nav_home: require("./images/nav_icons/home/home.png"),
-  nav_employees: require("./images/nav_icons/nav_settings.png"),
-  nav_plus: require("./images/nav_icons/nav_plus.png"),
+  nav_home: require("./images/nav_icons/nav_home.png"),
+  nav_track: require("./images/nav_icons/nav_track.png"),
+  nav_chat: require("./images/nav_icons/nav_chat.png"),
+  nav_brands: require("./images/nav_icons/nav_brands.png"),
   left: require("./images/left_icon.png"),
   right: require("./images/right_icon.png"),
   slider: require("./images/sliders/slider.png"),
@@ -19,5 +20,9 @@ export const images = {
     cart:require("./images/header/header_cart.png"),
     search:require("./images/header/search.png"),
     side_menu:require("./images/header/side_menu.png")
+  },
+  splash:{
+    logo:require("./images/splash/splash_logo.png"),
+    bg:require("./images/splash/splash_uper_bg.png"),
   }
 };

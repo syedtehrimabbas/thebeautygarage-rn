@@ -1,9 +1,8 @@
 import React from "react";
 import AppContainer from "../../core/AppContainer";
-import { FlatList, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, LayoutAnimation, Text, TextInput, TouchableOpacity, View } from "react-native";
 import UserContext from "../../AuthContaxt";
 import { hp, wp } from "../../AppStyle/Dimension";
-import { images } from "../../assets";
 import { Typography } from "../../theme/Typography";
 import colors from "../../theme/colors";
 import { AppButton } from "../../core/AppButton";
@@ -11,29 +10,65 @@ import { CartItem } from "./CartItem";
 
 function Cart({ navigation }) {
   const state = React.useContext(UserContext);
-  const [subTotal, SubTotal] = React.useState(7200);
+  const [subTotal, SubTotal] = React.useState(0);
   const [tax, Tax] = React.useState(450);
   const [fee, Fee] = React.useState(350);
-  const totalPrice = React.useState(subTotal + tax + fee);
+  const [totalPrice, TotalPrice] = React.useState(subTotal + tax + fee);
+  const { cartProducts, CartProducts, login } = state;
 
-  const [cartItems] = React.useState([
-    { title: "Pixi Rose Tonic", size: "100 ML", price: 2400, currency: "PKR" },
-    { title: "Pixi Tonic", size: "150 ML", price: 2000, currency: "PKR" },
-    { title: "Pixi Tonic", size: "150 ML", price: 2000, currency: "PKR" },
-    { title: "Pixi Tonic", size: "150 ML", price: 2000, currency: "PKR" },
-    { title: "Pixi Tonic", size: "150 ML", price: 2000, currency: "PKR" },
-    { title: "Pixi Tonic", size: "150 ML", price: 2000, currency: "PKR" },
-    { title: "Pixi Tonic", size: "150 ML", price: 2000, currency: "PKR" },
-    { title: "Pixi Tonic", size: "150 ML", price: 2000, currency: "PKR" },
-  ]);
+  React.useEffect(() => {
+    let subTotal = 0;
+    if (cartProducts.length > 0) {
+      cartProducts.map((item) => {
+        let itemPrice = item.cprice * item.quantity;
+        subTotal += itemPrice;
+        TotalPrice(subTotal + tax + fee);
+      });
+    } else {
+      subTotal = 0;
+      TotalPrice(subTotal + tax + fee);
+      navigation.pop();
+    }
+    SubTotal(subTotal);
+  }, [cartProducts]);
+
+  const onPlus = (item, index) => {
+    let prevCarts = [...cartProducts];
+    prevCarts[index].quantity = prevCarts[index].quantity + 1;
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+    CartProducts(prevCarts);
+  };
+  const onMinus = (item, index) => {
+    let prevCarts = [...cartProducts];
+    prevCarts[index].quantity = prevCarts[index].quantity - 1;
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+    CartProducts(prevCarts);
+  };
+  const removeFromCart = (index) => {
+    let prevCarts = [...cartProducts];
+    prevCarts.splice(index, 1);
+    CartProducts(prevCarts);
+  };
+  const checkout = () => {
+    if (login) {
+      navigation.navigate("CheckoutAddress")
+    } else {
+      navigation.navigate("Welcome");
+    }
+  };
   return (<AppContainer
       state={state}
       children={<View style={{ background: "white" }}>
         <FlatList
           showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}
-          data={cartItems}
+          data={cartProducts}
           style={{ width: wp(90), height: hp(40), alignSelf: "center" }}
-          renderItem={({ index, item }) => <CartItem item={item} quantityViewShow={true}/>}
+          renderItem={({ index, item }) => <CartItem item={item} quantityViewShow={true}
+                                                     onPlus={() => onPlus(item, index)}
+                                                     onMinus={() => onMinus(item, index)}
+                                                     removeFromCart={() => removeFromCart(index)}
+
+          />}
         />
 
         <View style={{
@@ -91,12 +126,12 @@ function Cart({ navigation }) {
         }}>
           <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5, justifyContent: "space-between" }}>
             <Text style={[Typography.MediumRegular, { color: colors.grey2 }]}>{"Subtotal"}</Text>
-            <Text style={[Typography.MediumBold]}>{subTotal}</Text>
+            <Text style={[Typography.MediumBold]}>{subTotal + " PKR"}</Text>
           </View>
 
           <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5, justifyContent: "space-between" }}>
             <Text style={[Typography.MediumRegular, { color: colors.grey2 }]}>{"Tax"}</Text>
-            <Text style={[Typography.MediumBold]}>{tax}</Text>
+            <Text style={[Typography.MediumBold]}>{tax + " PKR"}</Text>
           </View>
 
           <View style={{
@@ -107,17 +142,17 @@ function Cart({ navigation }) {
             marginBottom: 10,
           }}>
             <Text style={[Typography.MediumRegular, { color: colors.grey2 }]}>{"Shipping Fee"}</Text>
-            <Text style={[Typography.MediumBold]}>{fee}</Text>
+            <Text style={[Typography.MediumBold]}>{fee + " PKR"}</Text>
           </View>
 
           <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5, justifyContent: "space-between" }}>
             <Text style={[Typography.MediumRegular, { color: colors.grey2 }]}>{"Total Price"}</Text>
-            <Text style={[Typography.MediumBold]}>{totalPrice}</Text>
+            <Text style={[Typography.MediumBold]}>{totalPrice + " PKR"}</Text>
           </View>
 
         </View>
         <AppButton label={"Check Out"} backgroundColor={colors.red}
-                   onPress={() => navigation.navigate("CheckoutAddress")}
+                   onPress={checkout}
                    styles={{ alignSelf: "center", marginBottom: 20 }} height={45} />
       </View>}>
     </AppContainer>

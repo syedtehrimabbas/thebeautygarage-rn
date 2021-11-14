@@ -78,7 +78,7 @@ function Home({ navigation }) {
     state.Loading(true);
     HttpService._productByType(type, (status, res) => {
       console.log("res", res);
-      
+
       let data = res.data;
       if (status && res.status) {
         switch (type) {
@@ -127,8 +127,10 @@ function Home({ navigation }) {
   const addCart = (item) => {
     let prevCarts = [...cartProducts];
     let index = prevCarts.indexOf(item);
-    if (index === -1) prevCarts.push(item);
-    else prevCarts.splice(index, 1);
+    if (index === -1) {
+      item.quantity = 1;
+      prevCarts.push(item);
+    } else prevCarts.splice(index, 1);
     CartProducts(prevCarts);
   };
 
@@ -213,7 +215,8 @@ function Home({ navigation }) {
                     color: "#FF0000",
                     marginTop: 5,
                   }]}>{`Rs.${item.cprice}`}</Text>
-                  <AppButton label={isInCart(cartProducts,item)?"Remove":"Add to cart"} backgroundColor={colors.black} onPress={() => addCart(item)}
+                  <AppButton label={isInCart(cartProducts, item) ? "Remove" : "Add to cart"}
+                             backgroundColor={colors.black} onPress={() => addCart(item)}
                              styles={{ alignSelf: "center" }} />
 
                 </View>
@@ -262,7 +265,8 @@ function Home({ navigation }) {
                   color: "#FF0000",
                   marginTop: 5,
                 }]}>{`Rs. ${item.cprice}`}</Text>
-                <AppButton label={"Add to cart"} backgroundColor={colors.black} onPress={() => addCart(item)}
+                <AppButton label={isInCart(cartProducts, item) ? "Remove" : "Add to cart"}
+                           backgroundColor={colors.black} onPress={() => addCart(item)}
                            styles={{ alignSelf: "center" }} />
 
               </View>}
