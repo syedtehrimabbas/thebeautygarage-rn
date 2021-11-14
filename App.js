@@ -21,6 +21,8 @@ import Welcome from "./src/Screens/welcome";
 import LoginScreen from "./src/Screens/login";
 import Signup from "./src/Screens/signup";
 import { Brands } from "./src/Screens/brands";
+import { Track } from "./src/Screens/track";
+import { Typography } from "./src/theme/Typography";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -64,51 +66,88 @@ function Dashboard({ navigation }) {
       </View>
     ),
   });
+  const TabIcon = ({ focused, color, title, icon }) => {
+    return <View style={{
+      flexDirection: "row",
+      padding: 10,
+      borderRadius: 18,
+      alignItems: "center",
+      backgroundColor: focused ? colors.red18 : colors.grey6,
+    }}>
+      <Image source={icon}
+             style={{ width: 22, height: 18, resizeMode: "contain", tintColor: color }} />
+      <Text
+        style={[Typography.SmallRegular, { color: color, fontSize: 10, marginStart: 4 }]}>{title}</Text>
+    </View>;
+  };
 
   return (
-    <BottomTab.Navigator backBehavior="none"
-                         screenOptions={{ headerShown: false }}
-                         shifting={false}
-                         activeColor={colors.tabActiveColor}
-                         inactiveColor={colors.tabActiveColor}
-                         tabBarOptions={{
-                           showLabel: true,
-                           activeTintColor: colors.tabActiveColor,
-                         }}>
+    <BottomTab.Navigator
+      shifting={true}
+      backBehavior="none"
+      activeColor={colors.white}
+      inactiveColor={colors.red}
+      tabBarOptions={{
+        showLabel: false,
+        activeTintColor: colors.red,
+        style: {
+          borderTopWidth: 0,
+          backgroundColor: colors.red,
+          height: 70,
+        },
+      }}
+      screenOptions={{ headerShown: false }}>
 
       <BottomTab.Screen name={"Home"} component={Home}
                         options={{
                           headerShown: false,
-                          tabBarIcon: ({ color }) => (
-                            <Image source={images.nav_home}
-                                   style={{ width: 20, height: 20, resizeMode: "contain", tintColor: color }} />
+                          tabBarIcon: ({ focused, color }) => (
+                            <TabIcon color={color} title={"Home"} focused={focused} icon={images.nav_home} />
                           ),
                         }}
       />
-      <BottomTab.Screen name={"Track"} component={Home}
+      <BottomTab.Screen name={"Track"} component={Track}
                         options={{
-                          tabBarIcon: ({ color }) => (
-                            <Image source={images.nav_track}
-                                   style={{ width: 20, height: 20, resizeMode: "contain", tintColor: color }} />
+                          tabBarIcon: ({ focused, color }) => (
+                            <TabIcon color={color} title={"Track"} focused={focused} icon={images.nav_track} />
                           ),
                         }} />
       <BottomTab.Screen name={"Chat"} component={Home}
                         options={{
-                          tabBarIcon: ({ color }) => (
-                            <Image source={images.nav_chat}
-                                   style={{ width: 20, height: 20, resizeMode: "contain", tintColor: color }} />
+                          tabBarIcon: ({ focused, color }) => (
+                            <TabIcon color={color} title={"Chat"} focused={focused} icon={images.nav_chat} />
                           ),
                         }} />
       <BottomTab.Screen name={"Brands"} component={Brands}
                         options={{
-                          tabBarIcon: ({ color }) => (
-                            <Image source={images.nav_brands}
-                                   style={{ width: 20, height: 20, resizeMode: "contain", tintColor: color }} />
+                          tabBarIcon: ({ focused, color }) => (
+                            <TabIcon color={color} title={"Brands"} focused={focused} icon={images.nav_brands} />
                           ),
                         }} />
     </BottomTab.Navigator>
   );
 }
+
+
+const navigatorOptions = {
+  cardStyle: { backgroundColor: "transparent" },
+  gestureEnabled: true,
+  cardStyleInterpolator: ({ current: { progress } }) => ({
+    cardStyle: {
+      opacity: progress.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 1],
+      }),
+    },
+    overlayStyle: {
+      opacity: progress.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 0.5],
+        extrapolate: "clamp",
+      }),
+    },
+  }),
+};
 
 function App() {
 
@@ -169,10 +208,8 @@ function App() {
     return (<UserProvider value={state}>
         <NavigationContainer>
           <Stack.Navigator
-            screenOptions={{
-              headerShown: true,
-            }}>
-
+            screenOptions={navigatorOptions}
+          >
             <Stack.Screen name="The Beauty Garage" component={Dashboard} options={{
               headerTitle: "The Beauty Garage",
               headerTitleStyle: {

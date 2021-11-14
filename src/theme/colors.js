@@ -20,6 +20,9 @@ const colors = {
   greyTabs: "#E1DEE5",
   tabActiveColor: "#FF2727",
   red: "#FF2727",
+  red18: "rgba(255,39,39,0.18)",
+  grey6: "rgba(122,122,122,0.06)",
+  blueColorLight: "#13B7CD",
   // your colors
 };
 

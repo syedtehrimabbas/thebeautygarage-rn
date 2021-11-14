@@ -5,6 +5,7 @@ import UserContext from "../../AuthContaxt";
 import { images } from "../../assets";
 import { Typography } from "../../theme/Typography";
 import HttpService from "../../http";
+import colors from "../../theme/colors";
 function Brands({ navigation }) {
   const state = React.useContext(UserContext);
   const [brands, Brands] = useState([]);
@@ -28,6 +29,13 @@ function Brands({ navigation }) {
   return (<AppContainer
       state={state}
       children={<View>
+        <Text style={[Typography.SmallMedium, {
+          backgroundColor: "#444444",
+          padding: 5,
+          width:'100%',
+          color: colors.white,
+          textAlign: "center",
+        }]}>{"Lorem ipsum dolor sit amet, consetetur"}</Text>
 
         <FlatList
           showsVerticalScrollIndicator={false}
