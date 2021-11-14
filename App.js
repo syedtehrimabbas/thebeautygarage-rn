@@ -18,9 +18,9 @@ import UserContext, { UserProvider } from "./src/AuthContaxt";
 import { CheckoutSuccess } from "./src/Screens/Checkout/CheckoutSuccess";
 import Splash from "./src/Screens/splash";
 import Welcome from "./src/Screens/welcome";
-import Login from "./src/Screens/login";
 import LoginScreen from "./src/Screens/login";
 import Signup from "./src/Screens/signup";
+import { Brands } from "./src/Screens/brands";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -99,7 +99,7 @@ function Dashboard({ navigation }) {
                                    style={{ width: 20, height: 20, resizeMode: "contain", tintColor: color }} />
                           ),
                         }} />
-      <BottomTab.Screen name={"Brands"} component={Home}
+      <BottomTab.Screen name={"Brands"} component={Brands}
                         options={{
                           tabBarIcon: ({ color }) => (
                             <Image source={images.nav_brands}
@@ -227,6 +227,7 @@ function App() {
               showLabel: true,
               headerShown: true,
             }} component={LoginScreen} />
+
             <Stack.Screen name="Signup" options={{
               headerTitle: "Create an account",
               showLabel: true,
