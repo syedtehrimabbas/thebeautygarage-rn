@@ -7,12 +7,15 @@ import { Typography } from "../../theme/Typography";
 import UserContext from "../../AuthContaxt";
 import HttpService from "../../http";
 import AppContainer from "../../core/AppContainer";
+import { Preferences } from "../../LocalStorage";
+import PreferencesKeys from "../../LocalStorage/PreferencesKeys";
 
 const LoginScreen = ({ navigation }) => {
   const state = React.useContext(UserContext);
   const { login, Loading } = state;
   const [email, Email] = useState();
   const [password, Password] = useState();
+  const {Login,setUserId,setUser,setUserSession} = state;
   const _login = () => {
     Loading(true);
     let formData = new FormData();
@@ -20,17 +23,17 @@ const LoginScreen = ({ navigation }) => {
     formData.append("password", password);
 
     HttpService.login(formData, (status, res) => {
-      console.log("res", res);
       Loading(false);
-      if (status && res.status) {
-        // Preferences._StoreData(PreferencesKeys.USER, res.user).then(() => {
-        //   setUserId(res.user.id);
-        //   setUser(true);
-        //   setUserSession(res.user);
-        // });
-        ///navigation.pop(2)
+      if (status && res.data) {
+        Preferences._StoreData(PreferencesKeys.USER, res.data).then(() => {
+          setUserId(res.data.id);
+          setUser(true);
+          Login(true)
+          setUserSession(res.data);
+          navigation.pop(2)
+        });
       } else {
-        alert("API error");
+        alert(res.message);
       }
     });
   };
@@ -60,7 +63,7 @@ const LoginScreen = ({ navigation }) => {
         <TextInput style={inputStyle}
                    onChangeText={text => Email(text)}
                    value={email}
-                   keyboardType={"mail-address"}
+                   keyboardType={"email-address"}
                    returnKeyType="next"
         >
         </TextInput>

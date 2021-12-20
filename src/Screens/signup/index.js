@@ -44,7 +44,6 @@ const Signup = ({ navigation }) => {
     formData.append("phone", "0333333333");
 
     HttpService.register(formData, (status, res) => {
-      console.log("res", res);
       Loading(false);
       if (status) {
         alert("Account registered");
@@ -55,7 +54,9 @@ const Signup = ({ navigation }) => {
         //   setUserSession(res.user);
         // });
       } else {
-        alert("API error");
+        if(res.message.email[0]){
+          alert(res.message.email[0]);
+        }
       }
     });
   };
@@ -93,7 +94,7 @@ const Signup = ({ navigation }) => {
         <TextInput style={inputStyle}
                    onChangeText={text => Email(text)}
                    value={email}
-                   keyboardType={"mail-address"}
+                   keyboardType={"email-address"}
                    returnKeyType="next"
         >
         </TextInput>

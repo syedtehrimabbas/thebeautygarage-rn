@@ -43,7 +43,6 @@ function ProductDetails({ navigation, route }) {
   const _pDetails = (id) => {
     state.Loading(true);
     HttpService._productDetailsById(id, (status, res) => {
-      console.log("res", res);
       let data = res.data;
       if (status && res.status) {
         Details(data);
@@ -55,7 +54,6 @@ function ProductDetails({ navigation, route }) {
   const _pReviews = (id) => {
     state.Loading(true);
     HttpService._productReviewsById(id, (status, res) => {
-      console.log("res", res);
       let data = res.data;
       if (status && res.status) {
         Reviews(data);

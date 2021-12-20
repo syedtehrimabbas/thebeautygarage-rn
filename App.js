@@ -23,6 +23,9 @@ import Signup from "./src/Screens/signup";
 import { Brands } from "./src/Screens/brands";
 import { Track } from "./src/Screens/track";
 import { Typography } from "./src/theme/Typography";
+import { Preferences } from "./src/LocalStorage";
+import PreferencesKeys from "./src/LocalStorage/PreferencesKeys";
+import { AllProducts } from "./src/Screens/all_products";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -47,7 +50,8 @@ function Dashboard({ navigation }) {
             height: 20,
             textAlign: "center",
             textAlignVertical: "center",
-            borderRadius: 10,
+            borderRadius: 20,
+            shadowRadius:20,
             backgroundColor: colors.red,
             color: colors.white,
           }}>{state.cartProducts.length}</Text>
@@ -186,6 +190,15 @@ function App() {
     LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
     LogBox.ignoreAllLogs();//Ignore all log notifications
     setTimeout(() => {
+      Preferences._GetStoredData(PreferencesKeys.USER).then((data) => {
+        console.log('_GetStoredData',data)
+        if(data){
+          setUserId(data.id);
+          setUser(true);
+          Login(true)
+          setUserSession(data);
+        }
+      });
       setSplash(false);
     }, 2000);
   }, []);
@@ -212,6 +225,13 @@ function App() {
           >
             <Stack.Screen name="The Beauty Garage" component={Dashboard} options={{
               headerTitle: "The Beauty Garage",
+              headerTitleStyle: {
+                fontWeight: "bold",
+              },
+            }} />
+
+            <Stack.Screen name="AllProducts" component={AllProducts} options={{
+              headerTitle: "Products",
               headerTitleStyle: {
                 fontWeight: "bold",
               },

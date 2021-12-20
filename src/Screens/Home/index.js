@@ -22,13 +22,13 @@ import HttpService from "../../http";
 import { PRODUCT_TYPE } from "../../constants/Constants";
 import { isInCart } from "../../core/CommonMethods";
 import { OPEN_CART } from "../../core/EVENTS";
+import { ProductItem } from "../../core/ProductsItem";
 
 const SliderComponent = ({ item }) => {
   let image = HttpService.getAbsoluteImageUrl(item.photo);
-  console.log("image", image);
 
   return <ImageBackground source={{ uri: image }} resizeMode="cover"
-                          style={{ width: "100%", resizeMode: "stretch", alignSelf: "center", height: 200 }}>
+    style={{ width: "100%", resizeMode: "stretch", alignSelf: "center", height: 200 }}>
     <View style={{ position: "absolute", bottom: 20, left: 30 }}>
       <Text style={[Typography.LargeBold, {
         color: item.title_color,
@@ -77,7 +77,6 @@ function Home({ navigation }) {
   const _productByType = (type) => {
     state.Loading(true);
     HttpService._productByType(type, (status, res) => {
-      console.log("res", res);
 
       let data = res.data;
       if (status && res.status) {
@@ -103,7 +102,6 @@ function Home({ navigation }) {
   const _homeSliders = () => {
     state.Loading(true);
     HttpService._homeSliders((status, res) => {
-      console.log("res", res);
       let data = res.data;
       if (status && res.status) {
         HomeSliders(data);
@@ -115,7 +113,6 @@ function Home({ navigation }) {
   const _allCategories = () => {
     state.Loading(true);
     HttpService._allCategories((status, res) => {
-      console.log("res", res);
       let data = res.data;
       if (status && res.status) {
         Categories(data);
@@ -135,195 +132,145 @@ function Home({ navigation }) {
   };
 
   return (<AppContainer
-      state={state}
-      children={<View>
-        <Text style={[Typography.SmallMedium, {
-          backgroundColor: "#444444",
-          padding: 5,
-          color: colors.white,
-          textAlign: "center",
-        }]}>{"Get 40% flat discount on PIXI Products"}</Text>
-        <ScrollView>
-          <View style={{ marginBottom: 30 }}>
+    state={state}
+    children={<View>
+      <Text style={[Typography.SmallMedium, {
+        backgroundColor: "#444444",
+        padding: 5,
+        color: colors.white,
+        textAlign: "center",
+      }]}>{"Get 40% flat discount on PIXI Products"}</Text>
+      <ScrollView>
+        <View style={{ marginBottom: 30 }}>
 
-            <Swiper
-              height={200}
-              showsButtons={false}
-              style={styles.wrapper}
-            >
-              {homeSliders.map((item) => {
-                return <SliderComponent item={item} />;
-              })}
-            </Swiper>
+          <Swiper
+            height={200}
+            showsButtons={false}
+            style={styles.wrapper}
+          >
+            {homeSliders.map((item) => {
+              return <SliderComponent item={item} />;
+            })}
+          </Swiper>
 
-            <Text style={[Typography.MediumBold, {
-              textAlign: "center",
-              margin: 20,
-            }]}>{"Categories".toLocaleUpperCase()}</Text>
+          <Text style={[Typography.MediumBold, {
+            textAlign: "center",
+            margin: 20,
+          }]}>{"Categories".toLocaleUpperCase()}</Text>
 
-            <View style={{ height: 50 }}>
-              <FlatList
-                showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}
-                data={categories}
-                horizontal={true}
-                renderItem={({ index, item }) => <TouchableOpacity onPress={() => SelectedPosition(index)}>
-                  <Text style={{
-                    color: selectedPosition === index ? colors.white : colors.black,
-                    margin: 5,
-                    backgroundColor: selectedPosition === index ? colors.red : colors.grey3,
-                    borderTopRightRadius: 17,
-                    borderTopLeftRadius: 17,
-                    borderBottomLeftRadius: 17,
-                    borderBottomRightRadius: 0,
-                    height: 30,
-                    paddingStart: 10,
-                    paddingEnd: 10,
-                    paddingTop: 5,
-                    paddingBottom: 5,
-                    textAlign: "center",
-                    textAlignVertical: "center",
-                  }}>{item.cat_name}</Text>
-                </TouchableOpacity>}
-              />
-            </View>
-
-            <Text style={[Typography.MediumBold, { textAlign: "center", margin: 20 }]}>{"Best Sellers"}</Text>
+          <View style={{ height: 50 }}>
             <FlatList
               showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}
-              data={productsBestSelling}
+              data={categories}
               horizontal={true}
-              renderItem={({ index, item }) => <TouchableOpacity
-                onPress={() => navigation.navigate("ProductDetails", { id: item.id })}
-                activeOpacity={0.7} style={{
-                width: 164,
+              renderItem={({ index, item }) => <TouchableOpacity onPress={() => {
+                navigation.navigate("AllProducts", { id: item.id })
+                SelectedPosition(index)
+              }}>
+                <Text style={{
+                  color: selectedPosition === index ? colors.white : colors.black,
+                  margin: 5,
+                  backgroundColor: selectedPosition === index ? colors.red : colors.grey3,
+                  borderTopRightRadius: 17,
+                  borderTopLeftRadius: 17,
+                  borderBottomLeftRadius: 17,
+                  borderBottomRightRadius: 0,
+                  height: 30,
+                  paddingStart: 10,
+                  paddingEnd: 10,
+                  paddingTop: 5,
+                  paddingBottom: 5,
+                  textAlign: "center",
+                  textAlignVertical: "center",
+                }}>{item.cat_name}</Text>
+              </TouchableOpacity>}
+            />
+          </View>
+
+          <Text style={[Typography.MediumBold, { textAlign: "center", margin: 20 }]}>{"Best Sellers"}</Text>
+          <FlatList
+            showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}
+            data={productsBestSelling}
+            horizontal={true}
+            renderItem={({ index, item }) => <ProductItem navigation={navigation} cartProducts={cartProducts} item={item} onAddCart={() => addCart(item)} />}
+          />
+
+          <AppButton
+            label={"Load more"}
+            backgroundColor={colors.grey3}
+            textColor={colors.black}
+            width={wp(25)}
+            onPress={() => alert("under dev")}
+            styles={{ alignSelf: "center" }}
+            borderRadius={2} />
+
+          <View>
+            <Image
+              source={images.slider}
+              style={{ width: "100%", resizeMode: "contain", alignSelf: "center" }} />
+          </View>
+
+          <Text style={[Typography.MediumBold, { textAlign: "center", margin: 20 }]}>{"Featured Products"}</Text>
+
+          <FlatList
+            showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}
+            data={productsFeatured}
+            horizontal={true}
+            renderItem={({ index, item }) => <ProductItem navigation={navigation} cartProducts={cartProducts} item={item} onAddCart={() => addCart(item)} />}
+          />
+
+          <AppButton
+            label={"Load more"}
+            backgroundColor={colors.grey3}
+            textColor={colors.black}
+            width={wp(25)}
+            onPress={() => alert("under dev")}
+            styles={{ alignSelf: "center" }}
+            borderRadius={2} />
+
+          <Text style={[Typography.MediumBold, { textAlign: "center", margin: 20 }]}>{"Featured Brands"}</Text>
+
+
+          <FlatList
+            showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}
+            data={["Pixi", "Clinique", "Pixi", "Clinique", "Pixi", "Clinique", "Pixi", "Clinique"]}
+            horizontal={true}
+            renderItem={({ index, item }) => <View
+              style={{
+                width: 150,
                 borderRadius: 20,
                 backgroundColor: "#fff",
                 elevation: 2,
                 margin: 10,
                 padding: 20,
               }}>
-                <View>
-                  <Image source={{ uri: HttpService.getAbsoluteImageUrl(item.photo) }}
-                         style={{ width: 80, height: 127, alignSelf: "center" }} />
-                  <Text style={[Typography.SmallRegular, {
-                    textAlign: "center",
-                    marginTop: 5,
-                  }]}>{item.name}</Text>
+              <Image source={images.feature_bran_dummy} style={{ width: 80, height: 127, alignSelf: "center" }} />
+              <Text style={[Typography.MediumBold, {
+                textAlign: "center",
+                marginTop: 5,
+              }]}>{item}</Text>
 
-                  <Text style={[Typography.MediumBold, {
-                    textAlign: "center",
-                    color: "#FF0000",
-                    marginTop: 5,
-                  }]}>{`Rs.${item.cprice}`}</Text>
-                  <AppButton label={isInCart(cartProducts, item) ? "Remove" : "Add to cart"}
-                             backgroundColor={colors.black} onPress={() => addCart(item)}
-                             styles={{ alignSelf: "center" }} />
-
-                </View>
-              </TouchableOpacity>}
-            />
-
-            <AppButton
-              label={"Load more"}
-              backgroundColor={colors.grey3}
-              textColor={colors.black}
-              width={wp(25)}
-              onPress={() => alert("under dev")}
-              styles={{ alignSelf: "center" }}
-              borderRadius={2} />
-
-            <View>
-              <Image
-                source={images.slider}
-                style={{ width: "100%", resizeMode: "contain", alignSelf: "center" }} />
-            </View>
-
-            <Text style={[Typography.MediumBold, { textAlign: "center", margin: 20 }]}>{"Featured Products"}</Text>
-
-            <FlatList
-              showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}
-              data={productsFeatured}
-              horizontal={true}
-              renderItem={({ index, item }) => <View
-                style={{
-                  width: 164,
-                  borderRadius: 20,
-                  backgroundColor: "#fff",
-                  elevation: 2,
-                  margin: 10,
-                  padding: 20,
-                }}>
-                <Image source={{ uri: HttpService.getAbsoluteImageUrl(item.photo) }}
-                       style={{ width: 80, height: 127, alignSelf: "center" }} />
-                <Text numberOfLines={2} style={[Typography.SmallRegular, {
-                  textAlign: "center",
-                  marginTop: 5,
-                }]}>{item.name}</Text>
-
-                <Text style={[Typography.MediumBold, {
-                  textAlign: "center",
-                  color: "#FF0000",
-                  marginTop: 5,
-                }]}>{`Rs. ${item.cprice}`}</Text>
-                <AppButton label={isInCart(cartProducts, item) ? "Remove" : "Add to cart"}
-                           backgroundColor={colors.black} onPress={() => addCart(item)}
-                           styles={{ alignSelf: "center" }} />
-
-              </View>}
-            />
-
-            <AppButton
-              label={"Load more"}
-              backgroundColor={colors.grey3}
-              textColor={colors.black}
-              width={wp(25)}
-              onPress={() => alert("under dev")}
-              styles={{ alignSelf: "center" }}
-              borderRadius={2} />
-
-            <Text style={[Typography.MediumBold, { textAlign: "center", margin: 20 }]}>{"Featured Brands"}</Text>
+            </View>}
+          />
 
 
-            <FlatList
-              showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}
-              data={["Pixi", "Clinique", "Pixi", "Clinique", "Pixi", "Clinique", "Pixi", "Clinique"]}
-              horizontal={true}
-              renderItem={({ index, item }) => <View
-                style={{
-                  width: 150,
-                  borderRadius: 20,
-                  backgroundColor: "#fff",
-                  elevation: 2,
-                  margin: 10,
-                  padding: 20,
-                }}>
-                <Image source={images.feature_bran_dummy} style={{ width: 80, height: 127, alignSelf: "center" }} />
-                <Text style={[Typography.MediumBold, {
-                  textAlign: "center",
-                  marginTop: 5,
-                }]}>{item}</Text>
-
-              </View>}
-            />
+        </View>
+      </ScrollView>
+    </View>}>
 
 
-          </View>
-        </ScrollView>
-      </View>}>
-
-
-    </AppContainer>
+  </AppContainer>
   );
 }
 
 export { Home };
 
 const styles = StyleSheet.create({
-    wrapper:
-      {
-        alignSelf: "center",
-        position: "absolute",
-        top: 0,
-      },
-  })
-;
+  wrapper:
+  {
+    alignSelf: "center",
+    position: "absolute",
+    top: 0,
+  },
+})
+  ;

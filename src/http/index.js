@@ -1,4 +1,4 @@
-export const BASE_API_URL = "https://thebeautygarage.pk/api/";
+export const BASE_API_URL = "https://thebeautygarage.uk/apis/public/";
 export const BASE_IMAGE_URL = "https://thebeautygarage.pk/assets/images/";
 // export const BASE_IMAGE_URL = "https://cdn.matchelitemuslim.com/storage/";
 let endPoints = {
@@ -19,7 +19,7 @@ let endPoints = {
 class Http {
   getAbsoluteUrl = (endPoint) => {
     // console.log("End Point=> " + endPoint + "\nUrl=> ", BASE_API_URL);
-    console.log("RequestURL=> " + BASE_API_URL + endPoint);
+    // console.log("RequestURL=> " + BASE_API_URL + endPoint);
     return BASE_API_URL + endPoint;
   };
 

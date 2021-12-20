@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import AppContainer from "../../../core/AppContainer";
 import { Text, View } from "react-native";
 import UserContext from "../../../AuthContaxt";
@@ -9,9 +9,12 @@ import { AppButton } from "../../../core/AppButton";
 import { CheckOutView } from "../../../core/CheckOutView";
 import { DeliveryItem } from "./DeliveryItem";
 
-function CheckoutDelivery({ navigation }) {
+function CheckoutDelivery({ navigation,route }) {
   const state = React.useContext(UserContext);
 
+  useEffect(()=>{
+    console.log("params",route.params)
+  },[])
   return (<AppContainer
       state={state}
       children={<View style={[AppStyles.centerItems, { paddingTop: 10 }]}>
@@ -58,7 +61,7 @@ function CheckoutDelivery({ navigation }) {
           <DeliveryItem selected={false} title="Free Delivery - PKR 0.00" subTitle="5-6 working days delivery" />
           <DeliveryItem selected={true} title="Standard - PKR 0.00" subTitle="1-3 working days" />
           <DeliveryItem selected={false} title="Express - PKR 0.00" subTitle="Next Day Delivery Within City" />
-          <AppButton label={"Next"} backgroundColor={colors.red} onPress={() => navigation.navigate("PaymentMethod")}
+          <AppButton label={"Next"} backgroundColor={colors.red} onPress={() => navigation.navigate("PaymentMethod",{addressInfo:route.params.addressInfo})}
                      styles={{ alignSelf: "center", position: "absolute", bottom: 30 }} height={45} />
         </View>
       </View>}>
