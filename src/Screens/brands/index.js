@@ -29,13 +29,14 @@ function Brands({ navigation }) {
   return (<AppContainer
       state={state}
       children={<View>
-        <Text style={[Typography.SmallMedium, {
+
+        {/* <Text style={[Typography.SmallMedium, {
           backgroundColor: "#444444",
           padding: 5,
           width:'100%',
           color: colors.white,
           textAlign: "center",
-        }]}>{"Lorem ipsum dolor sit amet, consetetur"}</Text>
+        }]}>{"Lorem ipsum dolor sit amet, consetetur"}</Text> */}
 
         <FlatList
           showsVerticalScrollIndicator={false}

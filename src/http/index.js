@@ -11,6 +11,7 @@ let endPoints = {
     productDetails: "product/",
     allCategories: "categories",
     productReviews: "product-reviews/",
+    search: "search/",
   },
   login: "login",
   register: "register",
@@ -67,6 +68,11 @@ class Http {
 
   _homeSliders(callBack) {
     const url = this.getAbsoluteUrl(endPoints.home.sliders);
+    this.getHttpRequest(url, callBack);
+  }
+
+  _searchProducts(query, callBack) {
+    const url = this.getAbsoluteUrl(`${endPoints.home.search}${query}`);
     this.getHttpRequest(url, callBack);
   }
 

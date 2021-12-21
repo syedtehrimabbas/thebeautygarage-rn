@@ -26,6 +26,7 @@ import { Typography } from "./src/theme/Typography";
 import { Preferences } from "./src/LocalStorage";
 import PreferencesKeys from "./src/LocalStorage/PreferencesKeys";
 import { AllProducts } from "./src/Screens/all_products";
+import { SearchProduct } from "./src/Screens/search_product";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -64,7 +65,7 @@ function Dashboard({ navigation }) {
         <TouchableOpacity style={headerTouchIconStyle}>
           <Image source={images.header.side_menu} style={headerIconStyle} />
         </TouchableOpacity>
-        <TouchableOpacity style={headerTouchIconStyle}>
+        <TouchableOpacity style={headerTouchIconStyle} onPress={()=>navigation.navigate("SearchProduct")}>
           <Image source={images.header.search} style={headerIconStyle} />
         </TouchableOpacity>
       </View>
@@ -116,12 +117,12 @@ function Dashboard({ navigation }) {
                             <TabIcon color={color} title={"Track"} focused={focused} icon={images.nav_track} />
                           ),
                         }} />
-      <BottomTab.Screen name={"Chat"} component={Home}
+      {/* <BottomTab.Screen name={"Chat"} component={Home}
                         options={{
                           tabBarIcon: ({ focused, color }) => (
                             <TabIcon color={color} title={"Chat"} focused={focused} icon={images.nav_chat} />
                           ),
-                        }} />
+                        }} /> */}
       <BottomTab.Screen name={"Brands"} component={Brands}
                         options={{
                           tabBarIcon: ({ focused, color }) => (
@@ -290,6 +291,12 @@ function App() {
               showLabel: true,
               headerShown: true,
             }} component={Signup} />
+
+            <Stack.Screen name="SearchProduct" options={{
+              headerTitle: "Search Product",
+              showLabel: true,
+              headerShown: true,
+            }} component={SearchProduct} />
 
           </Stack.Navigator>
         </NavigationContainer>

@@ -31,7 +31,7 @@ const SliderComponent = ({ item }) => {
     style={{ width: "100%", resizeMode: "stretch", alignSelf: "center", height: 200 }}>
     <View style={{ position: "absolute", bottom: 20, left: 30 }}>
       <Text style={[Typography.LargeBold, {
-        color: item.title_color,
+        color: colors.red.title_color,
       }]}>{item.title}</Text>
       <Text
         style={[Typography.SmallBold, { color: item.desc_color, marginBottom: 10 }]}>{item.description}</Text>
@@ -42,13 +42,14 @@ const SliderComponent = ({ item }) => {
         paddingEnd: 10,
         paddingBottom: 5,
         paddingTop: 5,
-        borderColor: colors.black,
+        borderColor: colors.red,
+        backgroundColor: colors.red,
         borderWidth: 2,
         borderRadius: 20,
         width: 100,
         alignItems: "center",
       }}>
-        <Text style={[Typography.SmallBold, { color: colors.black }]}>{"Shop now"}</Text>
+        <Text style={[Typography.SmallBold, { color: colors.white }]}>{"Shop now"}</Text>
       </TouchableOpacity>
 
     </View>
@@ -134,12 +135,12 @@ function Home({ navigation }) {
   return (<AppContainer
     state={state}
     children={<View>
-      <Text style={[Typography.SmallMedium, {
+      {/* <Text style={[Typography.SmallMedium, {
         backgroundColor: "#444444",
         padding: 5,
         color: colors.white,
         textAlign: "center",
-      }]}>{"Get 40% flat discount on PIXI Products"}</Text>
+      }]}>{"Get 40% flat discount on PIXI Products"}</Text> */}
       <ScrollView>
         <View style={{ marginBottom: 30 }}>
 
@@ -195,14 +196,14 @@ function Home({ navigation }) {
             renderItem={({ index, item }) => <ProductItem navigation={navigation} cartProducts={cartProducts} item={item} onAddCart={() => addCart(item)} />}
           />
 
-          <AppButton
+          {/* <AppButton
             label={"Load more"}
             backgroundColor={colors.grey3}
             textColor={colors.black}
             width={wp(25)}
             onPress={() => alert("under dev")}
             styles={{ alignSelf: "center" }}
-            borderRadius={2} />
+            borderRadius={2} /> */}
 
           <View>
             <Image
@@ -219,14 +220,14 @@ function Home({ navigation }) {
             renderItem={({ index, item }) => <ProductItem navigation={navigation} cartProducts={cartProducts} item={item} onAddCart={() => addCart(item)} />}
           />
 
-          <AppButton
+          {/* <AppButton
             label={"Load more"}
             backgroundColor={colors.grey3}
             textColor={colors.black}
             width={wp(25)}
             onPress={() => alert("under dev")}
             styles={{ alignSelf: "center" }}
-            borderRadius={2} />
+            borderRadius={2} /> */}
 
           <Text style={[Typography.MediumBold, { textAlign: "center", margin: 20 }]}>{"Featured Brands"}</Text>
 
