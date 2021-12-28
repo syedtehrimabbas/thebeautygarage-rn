@@ -17,6 +17,7 @@ function CheckoutSuccess({ navigation }) {
       <Text style={[Typography.MediumBold,{color:colors.white,marginTop:15}]}>{"For Completing Payment!"}</Text>
       <Text style={[Typography.MediumRegular,{color:colors.white,marginTop:5,textAlign:'center'}]}>{"Your order has been processed\nand will be deliver soon."}</Text>
       <TouchableOpacity
+      onPress={()=>navigation.pop()}
         style={[{
           borderRadius:  50,
           width: '30%',

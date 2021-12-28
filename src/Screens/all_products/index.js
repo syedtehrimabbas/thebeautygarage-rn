@@ -45,7 +45,7 @@ function AllProducts({ navigation, route }) {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
             style={{width:'100%'}}
-            contentContainerStyle={{justifyContent:'center'}}
+            contentContainerStyle={{justifyContent:'center',alignSelf:'center'}}
             data={products}
             numColumns={2}
             keyExtractor={(item, index) => index.toString()}

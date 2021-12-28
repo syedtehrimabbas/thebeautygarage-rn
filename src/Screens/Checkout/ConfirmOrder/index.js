@@ -11,16 +11,55 @@ import { hp, wp } from "../../../AppStyle/Dimension";
 import { CartItem } from "../../Cart/CartItem";
 import { DeliveryItem } from "../Delivery/DeliveryItem";
 import { images } from "../../../assets";
+import HttpService from "../../../http";
 
 function ConfirmOrder({ navigation, route }) {
   const state = React.useContext(UserContext);
   const [cashOnDelivery, CashOnDelivery] = useState(false);
-  const { cartProducts, CartProducts, login } = state;
-
+  const { cartProducts, fee, userId, totalPrice, Loading } = state;
+  const [address, Address] = useState({ name: "", phone: "" });
   useEffect(() => {
-    console.log("params", route.params)
+    console.log("totalPrice", totalPrice)
+    Address(route.params.addressInfo)
+    console.log("ConfirmOrder", route.params)
     CashOnDelivery(route.params.cashOnDelivery)
   }, [])
+
+  const onConfirmOrder = () => {
+    let cart = []
+    let totalQty = 0
+    cartProducts.map((item) => {
+      totalQty += item.quantity
+      cart.push({ product_id: item.id, qty: item.quantity, base_price: item.cprice })
+    })
+
+    let formData = new FormData()
+    formData.append("cart", cart)
+    formData.append("total", totalPrice)
+    formData.append("address", address.address)
+    formData.append("email", address.email)
+    formData.append("phone", address.phone)
+    formData.append("city", address.city)
+    formData.append("name", address.name)
+    formData.append("pickup_location", `Pickup address ${address.address}`)
+    formData.append("shipping_cost", fee)
+    formData.append("zip", address.zipcode)
+    formData.append("totalQty", totalQty)
+    formData.append("userId", userId)
+
+    console.log("formData", formData)
+    let request={
+      cart:cart
+    }
+    Loading(true);
+    HttpService.checkout(formData, (status, res) => {
+      Loading(false);
+      console.log("checkoutResponse",res)
+      if(status){
+        navigation.navigate("CheckoutSuccess")
+      }
+    });
+  }
 
   return (<AppContainer
     state={state}
@@ -78,7 +117,7 @@ function ConfirmOrder({ navigation, route }) {
             showsHorizontalScrollIndicator={false}
             data={cartProducts}
             style={{ width: wp(90), alignSelf: "center" }}
-            renderItem={({ item }) => <CartItem item={item} quantityViewShow={false} />}
+            renderItem={({ item }) => <CartItem item={item} quantityViewShow={false} canDelete={false} />}
           />
         </View>
 
@@ -106,7 +145,7 @@ function ConfirmOrder({ navigation, route }) {
           <Text
             style={[Typography.LargeBold, { color: colors.black, marginStart: 5 }]}>{"Cash on Delivery"}</Text>
         </View> : null}
-        <AppButton label={"Confirm order"} backgroundColor={colors.red} onPress={() => navigation.navigate("CheckoutSuccess")}
+        <AppButton label={"Confirm order"} backgroundColor={colors.red} onPress={onConfirmOrder}
           styles={{ alignSelf: "center", position: "absolute", bottom: 30 }} height={45} />
       </View>
     </View>}>

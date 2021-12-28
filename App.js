@@ -43,7 +43,7 @@ function Dashboard({ navigation }) {
           navigation.navigate("Cart");
       }}>
         <View>
-          <Text style={{
+          {state.cartProducts.length>0?<Text style={{
             position: "absolute",
             top: -10,
             right: -10,
@@ -52,20 +52,20 @@ function Dashboard({ navigation }) {
             textAlign: "center",
             textAlignVertical: "center",
             borderRadius: 20,
-            shadowRadius:20,
+            shadowRadius: 20,
             backgroundColor: colors.red,
             color: colors.white,
-          }}>{state.cartProducts.length}</Text>
+          }}>{state.cartProducts.length}</Text>:null}
           <Image source={images.header.cart} style={headerIconStyle} />
         </View>
       </TouchableOpacity>
     ),
     headerLeft: () => (
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <TouchableOpacity style={headerTouchIconStyle}>
+        {/* <TouchableOpacity style={headerTouchIconStyle}>
           <Image source={images.header.side_menu} style={headerIconStyle} />
-        </TouchableOpacity>
-        <TouchableOpacity style={headerTouchIconStyle} onPress={()=>navigation.navigate("SearchProduct")}>
+        </TouchableOpacity> */}
+        <TouchableOpacity style={headerTouchIconStyle} onPress={() => navigation.navigate("SearchProduct")}>
           <Image source={images.header.search} style={headerIconStyle} />
         </TouchableOpacity>
       </View>
@@ -80,7 +80,7 @@ function Dashboard({ navigation }) {
       backgroundColor: focused ? colors.red18 : colors.grey6,
     }}>
       <Image source={icon}
-             style={{ width: 22, height: 18, resizeMode: "contain", tintColor: color }} />
+        style={{ width: 22, height: 18, resizeMode: "contain", tintColor: color }} />
       <Text
         style={[Typography.SmallRegular, { color: color, fontSize: 10, marginStart: 4 }]}>{title}</Text>
     </View>;
@@ -104,19 +104,19 @@ function Dashboard({ navigation }) {
       screenOptions={{ headerShown: false }}>
 
       <BottomTab.Screen name={"Home"} component={Home}
-                        options={{
-                          headerShown: false,
-                          tabBarIcon: ({ focused, color }) => (
-                            <TabIcon color={color} title={"Home"} focused={focused} icon={images.nav_home} />
-                          ),
-                        }}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused, color }) => (
+            <TabIcon color={color} title={"Home"} focused={focused} icon={images.nav_home} />
+          ),
+        }}
       />
       <BottomTab.Screen name={"Track"} component={Track}
-                        options={{
-                          tabBarIcon: ({ focused, color }) => (
-                            <TabIcon color={color} title={"Track"} focused={focused} icon={images.nav_track} />
-                          ),
-                        }} />
+        options={{
+          tabBarIcon: ({ focused, color }) => (
+            <TabIcon color={color} title={"Track"} focused={focused} icon={images.nav_track} />
+          ),
+        }} />
       {/* <BottomTab.Screen name={"Chat"} component={Home}
                         options={{
                           tabBarIcon: ({ focused, color }) => (
@@ -124,11 +124,11 @@ function Dashboard({ navigation }) {
                           ),
                         }} /> */}
       <BottomTab.Screen name={"Brands"} component={Brands}
-                        options={{
-                          tabBarIcon: ({ focused, color }) => (
-                            <TabIcon color={color} title={"Brands"} focused={focused} icon={images.nav_brands} />
-                          ),
-                        }} />
+        options={{
+          tabBarIcon: ({ focused, color }) => (
+            <TabIcon color={color} title={"Brands"} focused={focused} icon={images.nav_brands} />
+          ),
+        }} />
     </BottomTab.Navigator>
   );
 }
@@ -164,6 +164,10 @@ function App() {
   const [cartProducts, CartProducts] = React.useState([]);
   const [login, Login] = React.useState(false);
 
+  const [tax, Tax] = React.useState(0);
+  const [fee, Fee] = React.useState(250);
+  const [totalPrice, TotalPrice] = React.useState(0 + tax + fee);
+
   let state = {
     splash: isSplash,
     setSplash: setSplash,
@@ -179,6 +183,10 @@ function App() {
     CartProducts: CartProducts,
     login: login,
     Login: Login,
+    tax: tax,
+    fee: fee,
+    totalPrice: totalPrice,
+    TotalPrice: TotalPrice
   };
 
   React.useEffect(() => {
@@ -192,8 +200,8 @@ function App() {
     LogBox.ignoreAllLogs();//Ignore all log notifications
     setTimeout(() => {
       Preferences._GetStoredData(PreferencesKeys.USER).then((data) => {
-        console.log('_GetStoredData',data)
-        if(data){
+        console.log('_GetStoredData', data)
+        if (data) {
           setUserId(data.id);
           setUser(true);
           Login(true)
@@ -220,87 +228,87 @@ function App() {
     return <Splash />;
   } else {
     return (<UserProvider value={state}>
-        <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={navigatorOptions}
-          >
-            <Stack.Screen name="The Beauty Garage" component={Dashboard} options={{
-              headerTitle: "The Beauty Garage",
-              headerTitleStyle: {
-                fontWeight: "bold",
-              },
-            }} />
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={navigatorOptions}
+        >
+          <Stack.Screen name="The Beauty Garage" component={Dashboard} options={{
+            headerTitle: "The Beauty Garage",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }} />
 
-            <Stack.Screen name="AllProducts" component={AllProducts} options={{
-              headerTitle: "Products",
-              headerTitleStyle: {
-                fontWeight: "bold",
-              },
-            }} />
+          <Stack.Screen name="AllProducts" component={AllProducts} options={{
+            headerTitle: "Products",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }} />
 
-            <Stack.Screen name="ProductDetails" options={{
-              headerTitle: "Product Details",
-              showLabel: false,
-            }} component={ProductDetails} />
-            <Stack.Screen name="Cart" options={{
-              headerTitle: "TBG Cart",
-              showLabel: false,
-            }}
-                          component={Cart} />
+          <Stack.Screen name="ProductDetails" options={{
+            headerTitle: "Product Details",
+            showLabel: false,
+          }} component={ProductDetails} />
+          <Stack.Screen name="Cart" options={{
+            headerTitle: "TBG Cart",
+            showLabel: false,
+          }}
+            component={Cart} />
 
-            <Stack.Screen name="CheckoutAddress" options={{
-              headerTitle: "Checkout",
-              showLabel: false,
-            }} component={CheckoutAddress} />
+          <Stack.Screen name="CheckoutAddress" options={{
+            headerTitle: "Checkout",
+            showLabel: false,
+          }} component={CheckoutAddress} />
 
-            <Stack.Screen name="CheckoutDelivery" options={{
-              headerTitle: "Checkout",
-              showLabel: false,
-            }} component={CheckoutDelivery} />
+          <Stack.Screen name="CheckoutDelivery" options={{
+            headerTitle: "Checkout",
+            showLabel: false,
+          }} component={CheckoutDelivery} />
 
-            <Stack.Screen name="PaymentMethod" options={{
-              headerTitle: "Payment",
-              showLabel: false,
-            }} component={PaymentMethod} />
+          <Stack.Screen name="PaymentMethod" options={{
+            headerTitle: "Payment",
+            showLabel: false,
+          }} component={PaymentMethod} />
 
-            <Stack.Screen name="ConfirmOrder" options={{
-              headerTitle: "Confirm Order",
-              showLabel: false,
-            }} component={ConfirmOrder} />
+          <Stack.Screen name="ConfirmOrder" options={{
+            headerTitle: "Confirm Order",
+            showLabel: false,
+          }} component={ConfirmOrder} />
 
-            <Stack.Screen name="CheckoutSuccess" options={{
-              headerTitle: "",
-              showLabel: false,
-              headerShown: false,
-            }} component={CheckoutSuccess} />
+          <Stack.Screen name="CheckoutSuccess" options={{
+            headerTitle: "",
+            showLabel: false,
+            headerShown: false,
+          }} component={CheckoutSuccess} />
 
-            <Stack.Screen name="Welcome" options={{
-              headerTitle: "",
-              showLabel: false,
-              headerShown: false,
-            }} component={Welcome} />
+          <Stack.Screen name="Welcome" options={{
+            headerTitle: "",
+            showLabel: false,
+            headerShown: false,
+          }} component={Welcome} />
 
-            <Stack.Screen name="LoginScreen" options={{
-              headerTitle: "Sign In Your Account",
-              showLabel: true,
-              headerShown: true,
-            }} component={LoginScreen} />
+          <Stack.Screen name="LoginScreen" options={{
+            headerTitle: "Sign In Your Account",
+            showLabel: true,
+            headerShown: true,
+          }} component={LoginScreen} />
 
-            <Stack.Screen name="Signup" options={{
-              headerTitle: "Create an account",
-              showLabel: true,
-              headerShown: true,
-            }} component={Signup} />
+          <Stack.Screen name="Signup" options={{
+            headerTitle: "Create an account",
+            showLabel: true,
+            headerShown: true,
+          }} component={Signup} />
 
-            <Stack.Screen name="SearchProduct" options={{
-              headerTitle: "Search Product",
-              showLabel: true,
-              headerShown: true,
-            }} component={SearchProduct} />
+          <Stack.Screen name="SearchProduct" options={{
+            headerTitle: "Search Product",
+            showLabel: true,
+            headerShown: true,
+          }} component={SearchProduct} />
 
-          </Stack.Navigator>
-        </NavigationContainer>
-      </UserProvider>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </UserProvider>
     );
   }
 }

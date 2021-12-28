@@ -15,6 +15,7 @@ let endPoints = {
   },
   login: "login",
   register: "register",
+  checkout: "checkout",
 };
 
 class Http {
@@ -82,6 +83,11 @@ class Http {
   }
   register(formData, callBack) {
     const url = this.getAbsoluteUrl(endPoints.register);
+    this.postHttpRequest(url, formData, callBack, false);
+  }
+
+  checkout(formData, callBack) {
+    const url = this.getAbsoluteUrl(endPoints.checkout);
     this.postHttpRequest(url, formData, callBack, false);
   }
 
