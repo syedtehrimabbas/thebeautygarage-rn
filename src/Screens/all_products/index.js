@@ -10,7 +10,6 @@ function AllProducts({ navigation, route }) {
     const { Loading, cartProducts, CartProducts } = state;
     React.useLayoutEffect(() => {
         const { params } = route
-        console.log("tehrim", params)
         if (params !== undefined) {
             _all_products(params.id);
         } else

@@ -19,22 +19,24 @@ function ConfirmOrder({ navigation, route }) {
   const { cartProducts, fee, userId, totalPrice, Loading } = state;
   const [address, Address] = useState({ name: "", phone: "" });
   useEffect(() => {
-    console.log("totalPrice", totalPrice)
     Address(route.params.addressInfo)
-    console.log("ConfirmOrder", route.params)
     CashOnDelivery(route.params.cashOnDelivery)
   }, [])
 
   const onConfirmOrder = () => {
     let cart = []
     let totalQty = 0
-    cartProducts.map((item) => {
+    let formData = new FormData()
+
+    cartProducts.map((item,index) => {
       totalQty += item.quantity
-      cart.push({ product_id: item.id, qty: item.quantity, base_price: item.cprice })
+      // cart.push({ product_id: item.id, qty: item.quantity, base_price: item.cprice })
+      formData.append(`cart[${index}][product_id]`,item.id)
+      formData.append(`cart[${index}][qty]`,item.quantity)
+      formData.append(`cart[${index}][base_price]`,item.cprice)
     })
 
-    let formData = new FormData()
-    formData.append("cart", cart)
+    // formData.append("cart", cart)
     formData.append("total", totalPrice)
     formData.append("address", address.address)
     formData.append("email", address.email)
@@ -45,16 +47,17 @@ function ConfirmOrder({ navigation, route }) {
     formData.append("shipping_cost", fee)
     formData.append("zip", address.zipcode)
     formData.append("totalQty", totalQty)
-    formData.append("userId", userId)
+    formData.append("user_id", userId)
+    formData.append("order_notes", "This is a test order")
+    formData.append("coupon_code", "0")
+    formData.append("coupon_discount", "0")
 
-    console.log("formData", formData)
     let request={
       cart:cart
     }
     Loading(true);
     HttpService.checkout(formData, (status, res) => {
       Loading(false);
-      console.log("checkoutResponse",res)
       if(status){
         navigation.navigate("CheckoutSuccess")
       }

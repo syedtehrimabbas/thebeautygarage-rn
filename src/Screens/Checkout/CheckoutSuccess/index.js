@@ -9,6 +9,7 @@ import colors from "../../../theme/colors";
 
 function CheckoutSuccess({ navigation }) {
   const state = React.useContext(UserContext);
+  const { CartProducts, TotalPrice } = state;
 
   return (<View
       style={[AppStyles.centerItems, { paddingTop: 10, backgroundColor: "#009E68", height: "100%", width: "100%" }]}>
@@ -17,7 +18,11 @@ function CheckoutSuccess({ navigation }) {
       <Text style={[Typography.MediumBold,{color:colors.white,marginTop:15}]}>{"For Completing Payment!"}</Text>
       <Text style={[Typography.MediumRegular,{color:colors.white,marginTop:5,textAlign:'center'}]}>{"Your order has been processed\nand will be deliver soon."}</Text>
       <TouchableOpacity
-      onPress={()=>navigation.pop()}
+      onPress={()=>{
+        CartProducts([])
+        TotalPrice(0)
+        navigation.pop(6)
+      }}
         style={[{
           borderRadius:  50,
           width: '30%',

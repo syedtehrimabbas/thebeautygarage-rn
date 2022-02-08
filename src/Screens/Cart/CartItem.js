@@ -7,7 +7,6 @@ import colors from "../../theme/colors";
 import HttpService from "../../http";
 
 export const CartItem = ({ item, quantityViewShow, onPlus, onMinus, removeFromCart, canDelete }) => {
-  console.log(JSON.stringify(item) + "\n");
   return <View
     style={{
       width: wp(90),

@@ -16,7 +16,6 @@ function SearchProduct({ navigation }) {
   const onSearch = (query) => {
     HttpService._searchProducts(query, (status, res) => {
       CartProducts(res.data)
-      console.log("_searchProducts", res)
     });
   } 
   

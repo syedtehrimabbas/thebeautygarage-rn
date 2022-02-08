@@ -229,7 +229,7 @@ function Home({ navigation }) {
             styles={{ alignSelf: "center" }}
             borderRadius={2} /> */}
 
-          <Text style={[Typography.MediumBold, { textAlign: "center", margin: 20 }]}>{"Featured Brands"}</Text>
+          {/* <Text style={[Typography.MediumBold, { textAlign: "center", margin: 20 }]}>{"Featured Brands"}</Text>
 
 
           <FlatList
@@ -252,7 +252,7 @@ function Home({ navigation }) {
               }]}>{item}</Text>
 
             </View>}
-          />
+          /> */}
 
 
         </View>

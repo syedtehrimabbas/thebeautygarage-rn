@@ -25,7 +25,6 @@ function PaymentMethod({ navigation, route }) {
   };
 
   useEffect(() => {
-    console.log("params", route.params)
     Address(route.params.addressInfo)
   }, [])
 

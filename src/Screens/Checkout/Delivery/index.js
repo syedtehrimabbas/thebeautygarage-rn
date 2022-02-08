@@ -13,7 +13,6 @@ function CheckoutDelivery({ navigation,route }) {
   const state = React.useContext(UserContext);
 
   useEffect(()=>{
-    console.log("params",route.params)
   },[])
   return (<AppContainer
       state={state}

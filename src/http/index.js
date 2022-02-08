@@ -88,6 +88,7 @@ class Http {
 
   checkout(formData, callBack) {
     const url = this.getAbsoluteUrl(endPoints.checkout);
+    console.log("formData",formData)
     this.postHttpRequest(url, formData, callBack, false);
   }
 
