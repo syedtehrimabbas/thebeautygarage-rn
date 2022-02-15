@@ -54,7 +54,7 @@ function Brands({ navigation }) {
               padding: 20,
             }}>
             <Image source={images.feature_bran_dummy} style={{ width: 80, height: 127, alignSelf: "center" }} />
-            <Text style={[Typography.MediumBold, {
+            <Text style={[Typography.SmallBold, {
               textAlign: "center",
               marginTop: 5,
             }]}>{item.sub_name}</Text>
